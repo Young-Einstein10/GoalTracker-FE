@@ -62,6 +62,7 @@ span.links:hover {
   cursor: pointer;
 }
 
+/**** NAVIGATION  ****/
 header {
   font-size: 1.4rem;
   height: 7rem;
@@ -87,9 +88,69 @@ nav .user-nav__item {
   margin: 0 15px;
 }
 
-section.content {
+/**** USER FORMS: SIGN UP AND SIGNIN ****/
+section.user-forms {
+  height: calc(100vh - 7rem);
   display: flex;
-  height: calc(100vh - 70px);
+  justify-content: center;
+  position: relative;
+  overflow-y: hidden;
+}
+
+.sign-up {
+  display: none;
+}
+
+div.form-wrapper {
+  max-width: 600px;
+  width: 100%;
+  position: absolute;
+  top: 10%;
+}
+
+div.form-wrapper h3 {
+  font-size: 2.5rem;
+  text-align: center;
+  margin: 2rem;
+}
+
+div.form-wrapper form {
+  margin: 2rem;
+}
+
+div.form-wrapper form label,
+div.form-wrapper form button,
+div.input-feedback {
+  margin: 2rem 0;
+}
+
+div.form-wrapper form label {
+  font-size: 1.7rem;
+}
+
+div.form-wrapper form label input {
+  margin-top: 1rem;
+}
+
+div.form-wrapper form button {
+  padding: 0.8rem 0;
+  background: #2cb978;
+  border: 0;
+  border-radius: 3px;
+  color: #fff;
+  font-size: 2rem;
+}
+
+/**** USER DASHBOARD ****/
+@media screen and (max-width: 576px) {
+  section.content {
+    flex-direction: column;
+  }
+}
+
+section.content {
+  display: none;
+  height: calc(100vh - 7rem);
   font-size: 1.4rem;
 }
 
@@ -187,6 +248,27 @@ p.todos-intro__goal {
   margin-bottom: 1rem;
 }
 
+p.todos-intro__btn {
+  font-size: 2rem;
+  display: flex;
+  cursor: pointer;
+}
+
+p.todos-intro__btn span {
+  width: 20px;
+  display: flex;
+  height: 20px;
+  color: #2cb978;
+  justify-content: center;
+  align-items: center;
+  margin-right: 2rem;
+}
+
+form.add-todo {
+  display: none;
+  margin-top: 1rem;
+}
+
 span.todos-list__item__options {
   position: absolute;
   right: 5rem;
@@ -277,7 +359,8 @@ ul li.todos-list__item > span {
 }
 
 /**** MODAL ****/
-.modal {
+.modal,
+.msgModal {
   position: fixed;
   left: 0;
   top: 0;
@@ -288,6 +371,12 @@ ul li.todos-list__item > span {
   visibility: hidden;
   transform: scale(1.1);
   transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+}
+
+.msg {
+  margin-left: 2rem;
+  font-size: 1.5rem;
+  margin-top: 2rem;
 }
 
 .modal-content {
@@ -336,7 +425,8 @@ ul li.todos-list__item > span {
   margin: 2rem;
 }
 
-.form-modal .btn-modal-container button {
+.form-modal .btn-modal-container button,
+.form-modal .btn-modal-container span {
   padding: 0.7rem 1.2rem;
   border: 0;
   border-radius: 3px;

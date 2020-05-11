@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Goal Tracker</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="./loader.css" />
   </head>
   <body>
     <header>
@@ -22,11 +23,87 @@
           <img src="" alt="Button" />
         </div>
         <div class="user-nav__item">
-          <p>Sign Out</p>
+          <span class="links auth" auth="sign-up">Sign Up</span>
+        </div>
+        <div class="user-nav__item">
+          <span class="links auth" auth="sign-in">Sign In</span>
+        </div>
+        <div class="user-nav__item">
+          <span class="links auth" auth="sign-out">Sign Out</span>
         </div>
       </nav>
     </header>
 
+    <!-- FORMS -->
+    <section class="user-forms">
+      <!-- Sign In -->
+      <div class="form-wrapper sign-in">
+        <h3>Login</h3>
+        <form>
+          <label>
+            Email:
+            <input
+              type="email"
+              className=""
+              id="signin-email"
+              name="email"
+              required
+            />
+            <div className="input-feedback"></div>
+          </label>
+
+          <label>
+            Password:
+            <input
+              type="password"
+              id="signin-password"
+              className=""
+              name="password"
+              required
+            />
+            <div className="input-feedback"></div>
+          </label>
+
+          <button type="submit">Submit</button>
+          <div className="input-feedback"></div>
+        </form>
+      </div>
+
+      <!-- Sign Up -->
+      <div class="form-wrapper sign-up">
+        <h3>Sign Up</h3>
+        <form>
+          <label>
+            Email:
+            <input
+              type="email"
+              className=""
+              id="signup-email"
+              name="email"
+              required
+            />
+            <div className="input-feedback"></div>
+          </label>
+
+          <label>
+            Password:
+            <input
+              type="password"
+              id="signup-password"
+              className=""
+              name="password"
+              required
+            />
+            <div className="input-feedback"></div>
+          </label>
+
+          <button type="submit">Submit</button>
+          <div className="input-feedback"></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- USER DASHBOARD -->
     <section class="content">
       <nav class="sidebar">
         <ul class="side-nav">
@@ -81,7 +158,6 @@
         </ul>
       </nav>
 
-      <!--  -->
       <main>
         <section class="todos">
           <div class="todos-intro">
@@ -89,11 +165,11 @@
             <div class="todos-list__container">
               <ul class="todos-list"></ul>
             </div>
-            <p class="todos-intro__btn">+ Add Task</p>
+            <p class="todos-intro__btn"><span>+</span> Add Task</p>
           </div>
-          <form action="#">
+          <form action="#" class="add-todo">
             <label for="todo-input">
-              <input type="text" id="todo-input" />
+              <input type="text" id="todo-input" required />
             </label>
             <div class="btn-container">
               <button class="add-todo-btn">Add Task</button>
@@ -115,23 +191,52 @@
     <!-- Add Project/Goal Modal -->
     <div class="modal">
       <div class="modal-content">
-        <form action="#" class="form-modal">
+        <form action="#" class="form-modal add-project">
           <div class="header">
             <h2>Add a Project</h2>
           </div>
 
           <label for="goal-input">
             Project Name:
-            <input type="text" id="goal-input" />
+            <input type="text" id="goal-input" required />
           </label>
 
           <div class="btn-modal-container">
-            <button class="close-button">Cancel</button>
+            <span class="close-button links">Cancel</span>
             <button class="add-goal">Add</button>
           </div>
         </form>
       </div>
     </div>
+
+    <!-- Message Modal -->
+    <div class="msgModal">
+      <div class="modal-content">
+        <form action="#" class="form-modal">
+          <div class="header">
+            <h2 class="msgType"></h2>
+          </div>
+
+          <p class="msg"></p>
+
+          <div class="btn-modal-container">
+            <button class="close-button">Ok</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Loading visual cue -->
+    <div id="loading-outer-container" class="spinner">
+      <div id="loading-inner-container">
+        <div id="loadspin">
+          <div id="circle1"></div>
+          <div id="circle2"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="auth.js"></script>
 
     <script src="script.js"></script>
   </body>
