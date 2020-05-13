@@ -62,7 +62,14 @@ const showSignUpForm = () => {
   signInForm.style.display = "none";
 };
 
-const signOut = () => {};
+const signOut = () => {
+  localStorage.removeItem("FBIdToken");
+  AuthState = {
+    isAuthenticated: false,
+    credentials: {},
+  };
+  routeToSignInPage();
+};
 
 // Function to hide and show the loading visual cue
 const loading = (action) => {
@@ -105,12 +112,31 @@ const handleSignIn = async (event) => {
     });
     const data = await response.json();
 
-    setAuthState(data);
-    loading("hide");
+    if (data.status == "success") {
+      setAuthState(data);
+      loading("hide");
+    } else if (data.status == "error") {
+      displayMsg(data.error, "Error");
+    }
   } catch (error) {
     console.log(error);
+    displayMsg(error.message, "Error");
   }
 };
+
+function routeToDashboard() {
+  // HIDE ALL FORMS THEN DISPLAY DASHBOARD
+  $$("section.user-forms").style.display = "none";
+  $$("section.content").style.display = "block";
+
+  $$("section.content").style.display = "flex";
+}
+
+function routeToSignInPage() {
+  // HIDE DASHBOARD THEN DISPLAY SIGNIN PAGE
+  $$("section.content").style.display = "none";
+  $$("section.user-forms").style.display = "flex";
+}
 
 const setAuthState = (userDetails) => {
   AuthState.isAuthenticated = true;
@@ -123,14 +149,6 @@ const setAuthState = (userDetails) => {
 
   routeToDashboard();
 };
-
-function routeToDashboard() {
-  // HIDE ALL FORMS THEN DISPLAY DASHBOARD
-  $$("section.user-forms").style.display = "none";
-  $$("section.content").style.display = "block";
-
-  $$("section.content").style.display = "flex";
-}
 
 const handleSignUp = async () => {};
 

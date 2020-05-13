@@ -4,6 +4,7 @@ const script_base_url = "http://localhost:5000";
 // ADD PROJECT/GOAL BUTTON
 const svgBtn = $(".svg-btn");
 const projectDropDown = $(".side-nav__item__dropdown");
+const addGoalBtn = $(".add-goal-btn");
 
 // MODAL
 const modal = $(".modal");
@@ -20,8 +21,10 @@ function windowOnClick(event) {
   }
 }
 
+// Listeners for showing Add Project Form
 trigger.addEventListener("click", toggleModal);
 closeButton.addEventListener("click", toggleModal);
+addGoalBtn.addEventListener("click", toggleModal);
 window.addEventListener("click", windowOnClick);
 
 // Listener for Project/Goal
@@ -49,9 +52,13 @@ const projectItems = document.querySelectorAll(
 const showProjectTodos = (goal) => {
   const { todos, body, id: goalId, is_achieved, created_on } = goal;
 
+  // Project Header
   $("div.welcome-msg").style.display = "none";
   $("section.todos").style.display = "block";
-  $("p.todos-intro__goal").textContent = body;
+  $("p.todos-intro__goal").innerHTML = `
+    <span>${body}</span>
+    <span class="productivity">Productivity: 20%</span>
+  `;
   $("p.todos-intro__goal").id = goalId;
   $("p.todos-intro__goal").setAttribute("is_achieved", is_achieved);
   $("p.todos-intro__goal").setAttribute("created_on", created_on);
@@ -96,12 +103,12 @@ const showProjectTodos = (goal) => {
           editIcon.src = "./assets/edit.svg";
           editIcon.alt = "edit button";
           editIcon.addEventListener("mouseover", (e) => showImgOptions(e));
-          editIcon.addEventListener("click", (e) => editTodo(e));
+          editIcon.addEventListener("click", () => handleEditTodo());
 
           delIcon.src = "./assets/delete.svg";
           delIcon.alt = "delete button";
           delIcon.addEventListener("mouseover", (e) => showImgOptions(e));
-          delIcon.addEventListener("click", (e) => deleteTodo());
+          delIcon.addEventListener("click", (e) => deleteTodo(e));
 
           moreOptions.appendChild(editIcon);
           moreOptions.appendChild(delIcon);
@@ -114,12 +121,180 @@ const showProjectTodos = (goal) => {
       : ($("ul.todos-list").innerHTML = `<p>No Todos for this Goal</p>`);
 };
 
-const editTodo = () => {
+// Listener for Edit Todo Cancel Button
+$(".edit-todo-cancelBtn").addEventListener("click", (event) => {
+  const selectedTodoID = event.target.id;
+  // console.log(document.getElementById(selectedTodoID));
+  const currTodo = document.getElementById(selectedTodoID);
+  // Show TodoItem
+  currTodo.style.display = "flex";
+  // Hide Add Todo Form
+  $("form.edit-todo").style.display = "none";
+});
+
+// Submit Listener for Edit Todo Form
+$("form.edit-todo").addEventListener("submit", (e) => {
+  // console.log(e.target.parentElement.firstElementChild.id);
+
+  let todoId, goalId;
+
+  todoId = e.target.id;
+  goalId = e.target.parentElement.firstElementChild.id;
+
+  editTodo(e, todoId, goalId);
+});
+
+const handleEditTodo = () => {
   console.log("Editing...");
+  // Get Current Value of Item Clicked
+  const currTodo = event.target.parentElement.parentElement;
+
+  // Hide TodoItem
+  currTodo.style.display = "none";
+
+  // Show Add Todo Form
+  $("form.edit-todo").style.display = "flex";
+
+  // Give Add Todo Form ID of Selected todoItem which will be used to display Selected TodoItem back
+  $("form.edit-todo").id = currTodo.id;
+
+  // ALso give an ID to the cancel button within form
+  $("form.edit-todo").querySelector("span.edit-todo-cancelBtn").id =
+    currTodo.id;
+
+  // Access Current Todo Text Value from Second Child Element
+  const currTodoValue = currTodo.childNodes[1].textContent;
+
+  // Access Todo-Input then set its value to current todo's value
+  $("#edit-todo-input").value = currTodoValue;
 };
 
-const deleteTodo = () => {
+const editTodo = async (event, todoId, goalId) => {
+  event.preventDefault();
+  // console.log(todoId);
+  // Get Edit Todo Input Value
+  const editTodoInput = document.getElementById("edit-todo-input");
+  // Get Status of Todo whether its been done or not
+  const currTodo = document.getElementById(todoId);
+  // Get is_done attribute
+  let is_done = currTodo.getAttribute("is_done");
+  // Convert is_done attribute to Boolean
+  is_done = JSON.parse(is_done);
+
+  const url = `http://localhost:5000/api/v1/goals/${goalId}/todos/${todoId}`;
+
+  const headers = new Headers({
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${AuthState.credentials.token}`,
+  });
+
+  try {
+    const response = await fetch(url, {
+      method: "PATCH",
+      headers: headers,
+      body: JSON.stringify({ body: editTodoInput.value, is_done }),
+    });
+
+    const data = await response.json();
+
+    if (data.status == "success") {
+      // Hide EDit Todo Form
+      $("form.edit-todo").style.display = "none";
+
+      // Remove All Child Elements For ListItem
+      currTodo.innerHTML = "";
+
+      // Create Newly Updated Child Elements For ListItem (current todo being edited)
+      const checkbox = document.createElement("span");
+      const textSpan = document.createElement("span");
+      const moreOptions = document.createElement("span");
+      const editIcon = document.createElement("img");
+      const delIcon = document.createElement("img");
+
+      checkbox.className = "todos-list__item__checkbox";
+      textSpan.className = "todos-list__item__text";
+      moreOptions.className = "todos-list__item__options";
+
+      checkbox.innerHTML = `
+        <label>
+          <input id="c1" type="checkbox">
+          <label for="c1"></label>
+        </label>
+      `;
+      textSpan.textContent = data.data[0].body;
+
+      editIcon.src = "./assets/edit.svg";
+      editIcon.alt = "edit button";
+      editIcon.addEventListener("mouseover", (e) => showImgOptions(e));
+      editIcon.addEventListener("click", () => handleEditTodo());
+
+      delIcon.src = "./assets/delete.svg";
+      delIcon.alt = "delete button";
+      delIcon.addEventListener("mouseover", (e) => showImgOptions(e));
+      delIcon.addEventListener("click", (e) => deleteTodo(e));
+
+      moreOptions.appendChild(editIcon);
+      moreOptions.appendChild(delIcon);
+
+      // Set Current Todo's to newly created child elements
+      currTodo.appendChild(checkbox);
+      currTodo.appendChild(textSpan);
+      currTodo.appendChild(moreOptions);
+
+      // Show TodoItem
+      currTodo.style.display = "flex";
+
+      // displayMsg(data.message, "Success");
+    } else if (data.status == "error") {
+      displayMsg(data.message, "Error");
+    }
+  } catch (error) {
+    console.log(error);
+    displayMsg(error.message, "Error");
+  }
+};
+
+const removeTodoFromUI = (id) => {
+  const todoItem = document.getElementById(id);
+  todoItem.remove();
+};
+
+const deleteTodo = async (event) => {
   console.log("Deleting...");
+
+  const todoId = event.target.parentElement.parentElement.id;
+
+  // Confirmation Modal
+  // displayMsg("Are you sure you want to delete this Todo?", "Confirm");
+
+  const goalId =
+    event.target.parentElement.parentElement.parentElement.parentElement
+      .previousElementSibling.id;
+
+  const url = `http://localhost:5000/api/v1/goals/${goalId}/todos/${todoId}`;
+
+  const headers = new Headers({
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${AuthState.credentials.token}`,
+  });
+
+  try {
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers: headers,
+    });
+
+    const data = await response.json();
+
+    if (data.status == "success") {
+      removeTodoFromUI(todoId);
+    } else if (data.status == "error") {
+      displayMsg(data.error, "Error");
+    }
+  } catch (error) {
+    console.log(error);
+    displayMsg(error.message, "Error");
+  }
 };
 
 const showImgOptions = (e) => {
@@ -168,7 +343,7 @@ const getAllGoals = () => {
         displayGoals(data.data, "Success");
       } else if (data.status === "error") {
         console.log(data);
-        displayMsg(data.message, "Error");
+        displayMsg(data.error, "Error");
       }
     })
     .catch((err) => {
@@ -180,21 +355,27 @@ const getAllGoals = () => {
 const displayGoals = (goals) => {
   goals.forEach((eachGoal) => {
     const li = document.createElement("li");
-    const iconSpan = document.createElement("span");
+    const checkboxSpan = document.createElement("span");
     const textSpan = document.createElement("span");
+    const optionSpan = document.createElement("span");
 
     li.id = `${eachGoal.id}`;
+    li.className = "project-list__item";
     li.setAttribute("is-achieved", eachGoal.is_achieved);
     li.setAttribute("created_on", eachGoal.created_on);
     li.addEventListener("click", (e) => {
       getProjectGoal(eachGoal.id);
     });
 
-    iconSpan.innerHTML = `<img src="./assets/circle.svg" alt="check button" />`;
-    textSpan.textContent = `${eachGoal.body}`;
+    optionSpan.className = "more-options-icon";
 
-    li.appendChild(iconSpan);
+    checkboxSpan.innerHTML = `<img src="./assets/circle.svg" alt="check button" />`;
+    textSpan.textContent = `${eachGoal.body}`;
+    optionSpan.innerHTML = `<img src="./assets/more_vert.svg" alt="More Options" />`;
+
+    li.appendChild(checkboxSpan);
     li.appendChild(textSpan);
+    li.appendChild(optionSpan);
     const dropdownContainer = $("ul.side-nav__item__dropdown");
     dropdownContainer.appendChild(li);
   });
@@ -340,8 +521,57 @@ $("form.add-todo .links").addEventListener("click", () => {
 // Submit Event for Add Todo Form
 $("form.add-todo").addEventListener("submit", (e) => handleTodoSubmit(e));
 
-// Handles Insertion of New Todo in TodosList
-const addNewTodoToUI = (newTodo) => {};
+// Handles Insertion of New Todo in TodoList
+const addNewTodoToUI = (data) => {
+  const { id, body, is_done, created_on } = data;
+  // Access TodoList Container
+  const todoContainer = $("ul.todos-list");
+
+  // Create New Elements
+  const li = document.createElement("li");
+  const checkbox = document.createElement("span");
+  const textSpan = document.createElement("span");
+  const moreOptions = document.createElement("span");
+  const editIcon = document.createElement("img");
+  const delIcon = document.createElement("img");
+
+  li.id = id;
+  li.className = "todos-list__item";
+  li.setAttribute("is_done", is_done);
+  li.setAttribute("created_on", created_on);
+  li.addEventListener("mouseover", showOptions);
+  li.addEventListener("mouseout", hideOptions);
+
+  checkbox.className = "todos-list__item__checkbox";
+  textSpan.className = "todos-list__item__text";
+  moreOptions.className = "todos-list__item__options";
+
+  checkbox.innerHTML = `
+            <label>
+              <input id="c1" type="checkbox">
+              <label for="c1"></label>
+            </label>
+          `;
+  textSpan.textContent = body;
+
+  editIcon.src = "./assets/edit.svg";
+  editIcon.alt = "edit button";
+  editIcon.addEventListener("mouseover", (e) => showImgOptions(e));
+  editIcon.addEventListener("click", () => handleEditTodo());
+
+  delIcon.src = "./assets/delete.svg";
+  delIcon.alt = "delete button";
+  delIcon.addEventListener("mouseover", (e) => showImgOptions(e));
+  delIcon.addEventListener("click", (e) => deleteTodo(e));
+
+  moreOptions.appendChild(editIcon);
+  moreOptions.appendChild(delIcon);
+  li.appendChild(checkbox);
+  li.appendChild(textSpan);
+  li.appendChild(moreOptions);
+
+  todoContainer.appendChild(li);
+};
 
 const handleTodoSubmit = async (event) => {
   event.preventDefault();
@@ -349,8 +579,6 @@ const handleTodoSubmit = async (event) => {
   const goalId = $("p.todos-intro__goal").id;
 
   const todoInput = document.getElementById("todo-input");
-
-  // addNewTodoToUI(todoInput);
 
   const url = `${script_base_url}/api/v1/goals/${goalId}/todos/`;
 
@@ -370,9 +598,10 @@ const handleTodoSubmit = async (event) => {
     console.log(data);
 
     if (data.status == "success") {
-      displayMsg("Todo Posted Successfully", "Success");
+      addNewTodoToUI(data.data);
+      // displayMsg("Todo Posted Successfully", "Success");
       $("form.add-todo").reset();
-    } else {
+    } else if (data.status == "error") {
       displayMsg(data.error, "Error");
     }
   } catch (error) {

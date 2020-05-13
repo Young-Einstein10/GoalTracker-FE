@@ -159,12 +159,13 @@ nav.sidebar {
   flex: 0 0 25%;
   display: flex;
   justify-content: center;
+  overflow-y: auto;
 }
 
 ul.side-nav {
   list-style: none;
   margin-top: 3.5rem;
-  margin-left: 4.5rem;
+  margin-left: 3rem;
   width: 100%;
 }
 
@@ -183,9 +184,16 @@ ul.side-nav__item__dropdown {
   display: none;
 }
 
+span.more-options-icon {
+  display: flex;
+  position: absolute;
+  right: 2rem;
+}
+
 li ul.show-goal-dropdown {
   display: block;
   transition-duration: 334ms;
+  position: relative;
   /* transition: height .3s cubic-bezier(.4, 0, .2, 1) 0ms; */
   transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
 }
@@ -246,11 +254,13 @@ p.todos-intro__goal {
   font-weight: 700;
   font-size: 2rem;
   margin-bottom: 1rem;
+  display: flex;
 }
 
 p.todos-intro__btn {
-  font-size: 2rem;
+  font-size: 1.5rem;
   display: flex;
+  align-items: center;
   cursor: pointer;
 }
 
@@ -264,7 +274,8 @@ p.todos-intro__btn span {
   margin-right: 2rem;
 }
 
-form.add-todo {
+form.add-todo,
+form.edit-todo {
   display: none;
   margin-top: 1rem;
 }
@@ -324,6 +335,10 @@ ul.todos-list {
   list-style: none;
 }
 
+span.productivity {
+  display: none;
+}
+
 ul.todos-list li {
   cursor: pointer;
   padding: 1.1rem 0;
@@ -331,7 +346,7 @@ ul.todos-list li {
   display: flex;
 }
 
-ul li.todos-list__item > span {
+ul li.todos-list__item>span {
   display: flex;
   align-items: center;
   margin-right: 10px;
@@ -440,6 +455,7 @@ ul li.todos-list__item > span {
 
 /****** CHECKBOX  ******/
 @supports (-webkit-appearance: none) or (-moz-appearance: none) {
+
   input[type="checkbox"],
   input[type="radio"] {
     --active: #2cb978;
@@ -497,8 +513,8 @@ ul li.todos-list__item > span {
     --bc: var(--border);
   }
 
-  input[type="checkbox"]:disabled + label,
-  input[type="radio"]:disabled + label {
+  input[type="checkbox"]:disabled+label,
+  input[type="radio"]:disabled+label {
     cursor: not-allowed;
   }
 
@@ -522,8 +538,8 @@ ul li.todos-list__item > span {
     --o: 1;
   }
 
-  input[type="checkbox"] + label,
-  input[type="radio"] + label {
+  input[type="checkbox"]+label,
+  input[type="radio"]+label {
     font-size: 14px;
     line-height: 21px;
     display: inline-block;
