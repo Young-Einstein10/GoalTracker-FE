@@ -255,6 +255,13 @@ p.todos-intro__goal {
   font-size: 2rem;
   margin-bottom: 1rem;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+span.todos-intro__goal__options img {
+  margin-right: 2rem;
+  cursor: pointer;
 }
 
 p.todos-intro__btn {
@@ -349,7 +356,7 @@ ul.todos-list li {
 ul li.todos-list__item>span {
   display: flex;
   align-items: center;
-  margin-right: 10px;
+  margin-right: 1rem;
 }
 
 .welcome-msg {
@@ -388,6 +395,19 @@ ul li.todos-list__item>span {
   transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
 }
 
+.edit-modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.1);
+  transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+}
+
 .msg {
   margin-left: 2rem;
   font-size: 1.5rem;
@@ -395,6 +415,16 @@ ul li.todos-list__item>span {
 }
 
 .modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--color-background-light);
+  width: 60rem;
+  border-radius: 0.5rem;
+}
+
+.edit-modal-content {
   position: absolute;
   top: 50%;
   left: 50%;

@@ -51,6 +51,10 @@ authAction.forEach((eachItem) => {
 const showSignInForm = () => {
   const signInForm = $$(".sign-in");
   const signUpForm = $$(".sign-up");
+  const dashBoard = $$("section.content");
+  dashBoard.style.display = "none";
+  $("section.user-forms").style.display = "flex";
+
   signUpForm.style.display = "none";
   signInForm.style.display = "block";
 };
@@ -58,8 +62,11 @@ const showSignInForm = () => {
 const showSignUpForm = () => {
   const signInForm = $$(".sign-in");
   const signUpForm = $$(".sign-up");
-  signUpForm.style.display = "block";
+  const dashBoard = $$("section.content");
+  dashBoard.style.display = "none";
+  $("section.user-forms").style.display = "flex";
   signInForm.style.display = "none";
+  signUpForm.style.display = "block";
 };
 
 const signOut = () => {
@@ -68,6 +75,7 @@ const signOut = () => {
     isAuthenticated: false,
     credentials: {},
   };
+  console.log(AuthState);
   routeToSignInPage();
 };
 
@@ -125,11 +133,19 @@ const handleSignIn = async (event) => {
 };
 
 function routeToDashboard() {
+  // debugger;
+  // window.location.href = "/";
   // HIDE ALL FORMS THEN DISPLAY DASHBOARD
   $$("section.user-forms").style.display = "none";
   $$("section.content").style.display = "block";
 
   $$("section.content").style.display = "flex";
+
+  // Fetch All User Goals
+  // getAllGoals();
+  // setTimeout(() => {
+  //   getAllGoals();
+  // }, 3000);
 }
 
 function routeToSignInPage() {
@@ -146,8 +162,8 @@ const setAuthState = (userDetails) => {
 
   const FBIdToken = `Bearer ${token}`;
   localStorage.setItem("FBIdToken", FBIdToken);
-
-  routeToDashboard();
+  window.location.href = "/";
+  // routeToDashboard();
 };
 
 const handleSignUp = async () => {};

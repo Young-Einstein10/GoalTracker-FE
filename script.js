@@ -49,6 +49,108 @@ const projectItems = document.querySelectorAll(
   "ul.side-nav__item__dropdown li"
 );
 
+// Handles Display of Edit Goal Modal
+const toggleEditModal = (goalId, text) => {
+  // Set Form Input Value To Current Goal
+  const formInput = document.getElementById("edit-goal-input");
+  formInput.value = text;
+  // MODAL
+  const modal = $(".edit-modal");
+  const closeButton = $(".close-edit-button");
+
+  // Show Modal
+  modal.classList.toggle("show-modal");
+
+  function toggleModal() {
+    modal.classList.toggle("show-modal");
+  }
+
+  function windowOnClick(event) {
+    if (event.target === modal) {
+      toggleModal();
+    }
+  }
+
+  // Listeners for showing Edit Project Form
+  closeButton.addEventListener("click", toggleModal);
+  window.addEventListener("click", windowOnClick);
+  $("form.edit-goal").addEventListener("submit", (e) => editGoal(e, goalId));
+};
+
+const editGoal = (e, goalId) => {
+  e.preventDefault();
+
+  console.log("editing...");
+};
+
+// Handle Editing of Goal
+const handleEditGoal = (event) => {
+  // Get ID of Goal to Edit
+  const goalId = event.target.parentElement.parentElement.id;
+  // Get Text Content Of Parent Elemnt
+  const text =
+    event.target.parentElement.parentElement.firstElementChild.textContent;
+
+  // Display Modal With Edit Form
+  toggleEditModal(goalId, text);
+};
+
+// Handle Deletion of Goal
+const handleDeleteGoal = async (event) => {
+  // console.log(event.target.parentElement.parentElement.id);
+  console.log("Deleting");
+
+  // Get ID of Goal to Delete
+  const goalId = event.target.parentElement.parentElement.id;
+
+  // Functon Handling Removal of Goal From UI
+  const removeGoalFromUI = () => {
+    const currGoal = document.getElementById(goalId);
+
+    // Remove Current Gooal From UI
+    currGoal.innerHTML = "";
+    // Remove All ToDos under Current Goal
+    $("ul.todos-list").innerHTML = "";
+    // Hide Add Task Button Within List Container
+    $("p.todos-intro__btn").style.display = "none";
+
+    const allGoals = document.querySelectorAll(".project-list__item");
+
+    allGoals.forEach((goal) => {
+      if (goal.dataset.name == goalId) {
+        console.log(goal);
+        goal.remove();
+      }
+    });
+  };
+
+  const url = `${script_base_url}/api/v1/goals/${goalId}`;
+
+  const headers = new Headers({
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${AuthState.credentials.token}`,
+  });
+
+  try {
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers: headers,
+    });
+
+    const data = await response.json();
+
+    if (data.status == "success") {
+      removeGoalFromUI();
+      displayMsg(data.message, "Success");
+    } else if (data.status == "error") {
+      displayMsg(data.error, "Error");
+    }
+  } catch (error) {
+    console.log(error);
+    displayMsg(error.message, "Error");
+  }
+};
+
 const showProjectTodos = (goal) => {
   const { todos, body, id: goalId, is_achieved, created_on } = goal;
 
@@ -56,12 +158,19 @@ const showProjectTodos = (goal) => {
   $("div.welcome-msg").style.display = "none";
   $("section.todos").style.display = "block";
   $("p.todos-intro__goal").innerHTML = `
-    <span>${body}</span>
-    <span class="productivity">Productivity: 20%</span>
+    <span class="text">${body}</span>
+    <span class="todos-intro__goal__options">
+      <img class="edit-goal" src="./assets/edit.svg" alt="edit button">
+      <img class="delete-goal" src="./assets/delete.svg" alt="delete button">
+    </span>
   `;
   $("p.todos-intro__goal").id = goalId;
   $("p.todos-intro__goal").setAttribute("is_achieved", is_achieved);
   $("p.todos-intro__goal").setAttribute("created_on", created_on);
+
+  // Add Click Listeners for Goal EDit and Delete
+  $(".edit-goal").addEventListener("click", (e) => handleEditGoal(e));
+  $(".delete-goal").addEventListener("click", (e) => handleDeleteGoal(e));
 
   // Clear TodosList if available
   $("ul.todos-list").innerHTML = "";
@@ -271,7 +380,7 @@ const deleteTodo = async (event) => {
     event.target.parentElement.parentElement.parentElement.parentElement
       .previousElementSibling.id;
 
-  const url = `http://localhost:5000/api/v1/goals/${goalId}/todos/${todoId}`;
+  const url = `${script_base_url}/api/v1/goals/${goalId}/todos/${todoId}`;
 
   const headers = new Headers({
     "Content-Type": "application/json",
@@ -359,7 +468,7 @@ const displayGoals = (goals) => {
     const textSpan = document.createElement("span");
     const optionSpan = document.createElement("span");
 
-    li.id = `${eachGoal.id}`;
+    li.dataset.name = `${eachGoal.id}`;
     li.className = "project-list__item";
     li.setAttribute("is-achieved", eachGoal.is_achieved);
     li.setAttribute("created_on", eachGoal.created_on);
