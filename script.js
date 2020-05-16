@@ -49,39 +49,28 @@ const projectItems = document.querySelectorAll(
   "ul.side-nav__item__dropdown li"
 );
 
-// Handles Display of Edit Goal Modal
-const toggleEditModal = (goalId, text) => {
-  // Set Form Input Value To Current Goal
-  const formInput = document.getElementById("edit-goal-input");
-  formInput.value = text;
-  // MODAL
+// Listeners for Closing Edit Project Form
+const closeEditButton = $(".close-edit-button");
+closeEditButton.addEventListener("click", () => {
   const modal = $(".edit-modal");
-  const closeButton = $(".close-edit-button");
-
-  // Show Modal
   modal.classList.toggle("show-modal");
+});
 
-  function toggleModal() {
+window.addEventListener("click", (event) => {
+  const modal = $(".edit-modal");
+
+  if (event.target === modal) {
     modal.classList.toggle("show-modal");
   }
+});
 
-  function windowOnClick(event) {
-    if (event.target === modal) {
-      toggleModal();
-    }
-  }
+// Handles Form Submission for Goal Update
+$("form.edit-project").addEventListener("submit", (e) => {
+  console.log(e.target.id);
+  let goalId = e.target.id;
 
-  // Listeners for showing Edit Project Form
-  closeButton.addEventListener("click", toggleModal);
-  window.addEventListener("click", windowOnClick);
-  $("form.edit-goal").addEventListener("submit", (e) => editGoal(e, goalId));
-};
-
-const editGoal = (e, goalId) => {
-  e.preventDefault();
-
-  console.log("editing...");
-};
+  editGoal(e, goalId);
+});
 
 // Handle Editing of Goal
 const handleEditGoal = (event) => {
@@ -91,8 +80,66 @@ const handleEditGoal = (event) => {
   const text =
     event.target.parentElement.parentElement.firstElementChild.textContent;
 
+  // Set ID of Edit Form to ID of Current Goal
+  $("form.edit-project").id = goalId;
+
+  // Set Form Input Value To Current Goal
+  const formInput = document.getElementById("edit-goal-input");
+  formInput.value = text;
+
   // Display Modal With Edit Form
-  toggleEditModal(goalId, text);
+  $(".edit-modal").classList.toggle("show-modal");
+};
+
+const editGoal = async (e, goalId) => {
+  e.preventDefault();
+
+  console.log("editing...");
+
+  // Get Form Input Value
+  const formInput = document.getElementById("edit-goal-input");
+
+  // Get Current Goal
+  const currGoal = document.getElementById(goalId);
+
+  // Get Status of Current Goal Whether its been achieved or not
+  let is_achieved = currGoal.getAttribute("is_achieved");
+  // Convert is_achieved to Boolean
+  is_achieved = JSON.parse(is_achieved);
+
+  const url = `${script_base_url}/api/v1/goals/${goalId}`;
+
+  const headers = new Headers({
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${AuthState.credentials.token}`,
+  });
+
+  try {
+    const response = await fetch(url, {
+      method: "PATCH",
+      headers: headers,
+      body: JSON.stringify({ body: formInput.value, is_achieved }),
+    });
+
+    const data = await response.json();
+    console.log(data);
+    if (data.status == "success") {
+      const { id, body, is_achieved } = data.data[0];
+
+      // Set Text Context of Current Goal to Body
+      currGoal.querySelector("span.text").textContent = body;
+
+      currGoal.setAttribute("is_achieved", is_achieved);
+
+      // Close Modal
+      $(".edit-modal").classList.toggle("show-modal");
+    } else if (data.status == "error") {
+      displayMsg(data.error, "Error");
+    }
+  } catch (error) {
+    console.log(error);
+    displayMsg(error.message, "Error");
+  }
 };
 
 // Handle Deletion of Goal
@@ -283,9 +330,9 @@ const editTodo = async (event, todoId, goalId) => {
   // console.log(todoId);
   // Get Edit Todo Input Value
   const editTodoInput = document.getElementById("edit-todo-input");
-  // Get Status of Todo whether its been done or not
+  // Get Current ToDo
   const currTodo = document.getElementById(todoId);
-  // Get is_done attribute
+  // Get Status of Todo whether its been done or not
   let is_done = currTodo.getAttribute("is_done");
   // Convert is_done attribute to Boolean
   is_done = JSON.parse(is_done);
@@ -466,7 +513,7 @@ const displayGoals = (goals) => {
     const li = document.createElement("li");
     const checkboxSpan = document.createElement("span");
     const textSpan = document.createElement("span");
-    const optionSpan = document.createElement("span");
+    // const optionSpan = document.createElement("span");
 
     li.dataset.name = `${eachGoal.id}`;
     li.className = "project-list__item";
@@ -476,15 +523,16 @@ const displayGoals = (goals) => {
       getProjectGoal(eachGoal.id);
     });
 
-    optionSpan.className = "more-options-icon";
+    // optionSpan.className = "more-options-icon";
 
     checkboxSpan.innerHTML = `<img src="./assets/circle.svg" alt="check button" />`;
+    textSpan.className = "goal-text";
     textSpan.textContent = `${eachGoal.body}`;
-    optionSpan.innerHTML = `<img src="./assets/more_vert.svg" alt="More Options" />`;
+    // optionSpan.innerHTML = `<img src="./assets/more_vert.svg" alt="More Options" />`;
 
     li.appendChild(checkboxSpan);
     li.appendChild(textSpan);
-    li.appendChild(optionSpan);
+    // li.appendChild(optionSpan);
     const dropdownContainer = $("ul.side-nav__item__dropdown");
     dropdownContainer.appendChild(li);
   });
@@ -557,6 +605,33 @@ const addProject = async (event) => {
 
   const project = $("#goal-input").value;
 
+  const addNewGoalToUI = (data) => {
+    const { id, body, is_achieved, created_on } = data;
+
+    // Select Goal List Container
+    const goalListContainer = $("ul.side-nav__item__dropdown");
+
+    // Create New List Element
+    const li = document.createElement("li");
+    // Set ClassName
+    li.className = "project-list__item";
+    // Set data-name attribute
+    li.dataset.name = id;
+    // Set IS_ACHIEVED ATTRIBUTE and Date Created
+    li.setAttribute("is_achieved", is_achieved);
+    li.setAttribute("created_on", created_on);
+    li.addEventListener("click", (e) => getProjectGoal(id));
+
+    li.innerHTML = `
+      <span>
+        <img src="./assets/circle.svg" alt="check button">
+      </span>
+      <span class="goal-text">${body}</span>
+    `;
+
+    goalListContainer.appendChild(li);
+  };
+
   const url = `${script_base_url}/api/v1/goals/`;
 
   const headers = new Headers({
@@ -576,6 +651,7 @@ const addProject = async (event) => {
 
     if (data.status == "success") {
       toggleModal();
+      addNewGoalToUI(data.data);
       displayMsg("Goal Successfully Posted", "Success");
       addProjForm.reset();
     } else {
@@ -718,3 +794,5 @@ const handleTodoSubmit = async (event) => {
     displayMsg(error.message, "Error");
   }
 };
+
+// Event Listener
