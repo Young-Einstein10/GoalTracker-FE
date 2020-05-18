@@ -1,27 +1,3 @@
-:root {
-  --color-primary-light: #e2e2e2;
-  --color-primary-light-2: hsla(0, 0%, 100%, 0.87);
-  --color-primary-dark: hsl(0, 3%, 23%);
-
-  --color-grey-light-1: #faf9f9;
-  --color-grey-light-2: #f4f2f2;
-  --color-grey-light-3: #f0eeee;
-  --color-grey-light-4: #ccc;
-
-  --color-grey-dark-1: #333;
-  --color-grey-dark-2: #777;
-  --color-grey-dark-3: #999;
-
-  --color-background-light: #282828;
-  --color-background-light-2: #363636;
-  --color-background-dark: #1f1f1f;
-  --color-background-dark-2: #171717;
-  --color-background-very-dark: #141212;
-
-  --line-light: 1px solid var(--color-grey-light-2);
-  --line-dark: solid 1px hsla(0, 0%, 100%, 0.1);
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -42,6 +18,31 @@ html {
   font-size: 62.5%;
 }
 
+.theme-light {
+  --color-primary: #110e0e;
+  --color-primary-2: hsla(0, 2%, 24%, 0.87);
+
+  --color-background: #b9b9b9;
+  --color-background-2: #e0dede;
+  --color-background-3: #f7f7f7;
+  --color-background-4: #aaaaaa;
+
+  --line: solid 1px #141313;
+}
+
+.theme-dark {
+  --color-primary: #e2e2e2;
+  --color-primary-2: hsla(0, 0%, 100%, 0.87);
+
+  --color-background: #282828;
+  --color-background-2: #363636;
+  --color-background-3: #1f1f1f;
+  --color-background-4: #171717;
+
+  --line: solid 1px hsla(0, 0%, 100%, 0.1);
+}
+
+
 @media only screen and (max-width: 68.75em) {
   html {
     font-size: 50%;
@@ -52,8 +53,8 @@ body {
   font-family: "Open Sans", sans-serif;
   font-weight: 400;
   line-height: 1.6;
-  color: var(--color-primary-light);
-  background: var(--color-background-dark);
+  color: var(--color-primary);
+  background: var(--color-background-3);
   min-height: 100vh;
 }
 
@@ -66,8 +67,8 @@ span.links:hover {
 header {
   font-size: 1.4rem;
   height: 7rem;
-  background-color: var(--color-background-light);
-  border-bottom: var(--line-dark);
+  background-color: var(--color-background);
+  border-bottom: var(--line);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -155,7 +156,7 @@ section.content {
 }
 
 nav.sidebar {
-  background-color: var(--color-background-light);
+  background-color: var(--color-background);
   flex: 0 0 25%;
   display: flex;
   justify-content: center;
@@ -175,7 +176,7 @@ ul.side-nav .side-nav__item div.side-nav__item__header {
   justify-content: space-between;
   padding-top: 1.5rem;
   padding-bottom: 0.5rem;
-  border-bottom: var(--line-dark);
+  border-bottom: var(--line);
   cursor: pointer;
 }
 
@@ -205,7 +206,7 @@ ul.side-nav__item__dropdown li {
 }
 
 ul.side-nav__item__dropdown li:hover {
-  background: var(--color-background-light-2);
+  background: var(--color-background-2);
   transition: background 0.1s ease-in;
   cursor: pointer;
 }
@@ -314,11 +315,11 @@ form label {
 form input {
   width: 100%;
   padding: 1rem;
-  border: var(--line-dark);
+  border: var(--line);
   border-radius: 3px;
   font-size: 14px;
-  background: var(--color-background-dark-2);
-  color: var(--color-primary-light-2);
+  background: var(--color-background-4);
+  color: var(--color-primary-2);
 }
 
 form .btn-container {
@@ -349,7 +350,7 @@ span.productivity {
 ul.todos-list li {
   cursor: pointer;
   padding: 1.1rem 0;
-  border-bottom: var(--line-dark);
+  border-bottom: var(--line);
   display: flex;
 }
 
@@ -419,7 +420,7 @@ ul li.todos-list__item>span {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: var(--color-background-light);
+  background-color: var(--color-background);
   width: 60rem;
   border-radius: 0.5rem;
 }
@@ -429,7 +430,7 @@ ul li.todos-list__item>span {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: var(--color-background-light);
+  background-color: var(--color-background);
   width: 60rem;
   border-radius: 0.5rem;
 }
@@ -446,13 +447,14 @@ ul li.todos-list__item>span {
 }
 
 .header {
-  background: var(--color-background-dark);
+  background: var(--color-background-3);
+  border-radius: 3px;
 }
 
 .header h2 {
   padding-top: 2rem;
   padding-bottom: 1rem;
-  border-bottom: var(--line-dark);
+  border-bottom: var(--line);
   padding-left: 2rem;
 }
 
@@ -493,7 +495,7 @@ ul li.todos-list__item>span {
     --focus: 2px #2cb978;
     --border: #bbc1e1;
     --border-hover: #2cb978;
-    --background: var(--color-background-dark-2);
+    --background: var(--color-background-4);
     --disabled: #f6f8ff;
     --disabled-inner: #e1e6f9;
     -webkit-appearance: none;

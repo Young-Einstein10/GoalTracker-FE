@@ -1,5 +1,6 @@
 const $ = (element) => document.querySelector(element);
-const script_base_url = "http://localhost:5000";
+// const script_base_url = "http://localhost:5000";
+const script_base_url = "https://einstein-goal-tracker.herokuapp.com";
 
 // ADD PROJECT/GOAL BUTTON
 const svgBtn = $(".svg-btn");

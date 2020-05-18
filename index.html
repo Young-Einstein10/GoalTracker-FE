@@ -18,10 +18,10 @@
       <nav class="user-nav">
         <!-- <div class="user-nav__item">
           <img src="" alt="Notifications" />
-        </div>
-        <div class="user-nav__item">
-          <img src="" alt="Button" />
         </div> -->
+        <div class="user-nav__item">
+          <button id="switch" onclick="toggleTheme()">Switch</button>
+        </div>
         <div class="user-nav__item">
           <span class="links auth" auth="sign-up">Sign Up</span>
         </div>
@@ -49,7 +49,7 @@
               name="email"
               required
             />
-            <div className="input-feedback"></div>
+            <div className="input-feedback-i1"></div>
           </label>
 
           <label>
@@ -61,11 +61,11 @@
               name="password"
               required
             />
-            <div className="input-feedback"></div>
+            <div className="input-feedback-i2"></div>
           </label>
 
           <button type="submit">Submit</button>
-          <div className="input-feedback"></div>
+          <div className="input-feedback-i3"></div>
         </form>
       </div>
 
@@ -266,8 +266,30 @@
       </div>
     </div>
 
+    <script>
+      // function to set a given theme/color-scheme
+      function setTheme(themeName) {
+        localStorage.setItem('theme', themeName);
+        document.documentElement.className = themeName;
+      }
+      // function to toggle between light and dark theme
+      function toggleTheme() {
+        if (localStorage.getItem('theme') === 'theme-dark') {
+          setTheme('theme-light');
+        } else {
+          setTheme('theme-dark');
+        }
+      }
+      // Immediately invoked function to set the theme on initial load
+      (function () {
+        if (localStorage.getItem('theme') === 'theme-dark') {
+          setTheme('theme-dark');
+        } else {
+          setTheme('theme-light');
+        }
+      })();
+    </script>
     <script src="auth.js"></script>
-
     <script src="script.js"></script>
   </body>
 </html>

@@ -27,7 +27,8 @@ checkAuthState();
 
 console.log(AuthState);
 
-const base_url = "http://localhost:5000";
+// const base_url = "http://localhost:5000";
+const base_url = "https://einstein-goal-tracker.herokuapp.com";
 
 // Access auth elements to listen for auth actions
 const authAction = document.querySelectorAll(".auth");
@@ -131,6 +132,12 @@ const handleSignIn = async (event) => {
     displayMsg(error.message, "Error");
   }
 };
+
+// const handleAuthError = (errMasg, type) => {
+//   if (type === 'Error') {
+
+//   }
+// }
 
 function routeToDashboard() {
   // debugger;
