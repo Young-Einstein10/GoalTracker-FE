@@ -382,10 +382,6 @@ img.rotate {
     width: 90%;
   }
 
-  div.welcome-msg img {
-    width: 100px;
-  }
-
   header nav {
     margin-right: 0;
   }
@@ -537,6 +533,10 @@ ul li.todos-list__item>span {
   top: 45%;
   left: 50%;
   transform: translate(-50%);
+}
+
+div.welcome-msg img {
+  width: 100px;
 }
 
 .welcome-msg p {
