@@ -382,12 +382,24 @@ img.rotate {
     width: 90%;
   }
 
+  div.welcome-msg img {
+    width: 100px;
+  }
+
   header nav {
     margin-right: 0;
   }
 
   header div.menu-nav {
     margin-left: 1rem;
+  }
+
+  nav .user-nav__item {
+    margin: 0rem;
+  }
+
+  span.logo {
+    font-size: 1.4rem;
   }
 }
 
@@ -451,7 +463,7 @@ span.todos-list__item__options img {
     right: 2rem;
   }
 
-  header nav {
+  nav {
     margin-right: 30px;
   }
 }
