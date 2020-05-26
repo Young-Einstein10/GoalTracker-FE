@@ -9,27 +9,49 @@
   </head>
   <body>
     <header>
-      <div class="logo">
-        LOGO
-      </div>
+      <div class="menu-nav">
+        <button class="close-icon" aria-checked="false">
+          <svg viewBox="0 0 24 24" class="close_icon" width="24" height="24">
+            <path
+              fill="currentColor"
+              fill-rule="nonzero"
+              d="M5.146 5.146a.5.5 0 0 1 .708 0L12 11.293l6.146-6.147a.5.5 0 0 1 .638-.057l.07.057a.5.5 0 0 1 0 .708L12.707 12l6.147 6.146a.5.5 0 0 1 .057.638l-.057.07a.5.5 0 0 1-.708 0L12 12.707l-6.146 6.147a.5.5 0 0 1-.638.057l-.07-.057a.5.5 0 0 1 0-.708L11.293 12 5.146 5.854a.5.5 0 0 1-.057-.638z"
+            ></path>
+          </svg>
+        </button>
 
-      <form action="#" class="theme__chnager">Theme Changer</form>
+        <button class="menu-icon" aria-checked="false">
+          <svg width="24" height="24" viewBox="0 0 24 24">
+            <path
+              fill="currentColor"
+              fill-rule="evenodd"
+              d="M4.5 5h15a.5.5 0 1 1 0 1h-15a.5.5 0 0 1 0-1zm0 6h15a.5.5 0 1 1 0 1h-15a.5.5 0 1 1 0-1zm0 6h15a.5.5 0 1 1 0 1h-15a.5.5 0 1 1 0-1z"
+            ></path>
+          </svg>
+        </button>
+
+        <span class="logo">
+          Goal Tracker
+        </span>
+      </div>
 
       <nav class="user-nav">
         <!-- <div class="user-nav__item">
           <img src="" alt="Notifications" />
         </div> -->
-        <div class="user-nav__item">
-          <button id="switch" onclick="toggleTheme()">Switch</button>
-        </div>
-        <div class="user-nav__item">
+        <div class="user-nav__item hide-when-signed-in">
           <span class="links auth" auth="sign-up">Sign Up</span>
         </div>
-        <div class="user-nav__item">
+        <div class="user-nav__item hide-when-signed-in">
           <span class="links auth" auth="sign-in">Sign In</span>
         </div>
+        <div class="user-nav__item hide-when-signed-out">
+          <button class="links auth" auth="sign-out"><b>Sign Out</b></button>
+        </div>
         <div class="user-nav__item">
-          <span class="links auth" auth="sign-out">Sign Out</span>
+          <button id="switch" onclick="toggleTheme()">
+            <img class="toggle-state-icon" src="./assets/sun.svg" alt="Toggle Icon">
+          </button>
         </div>
       </nav>
     </header>
@@ -73,6 +95,44 @@
       <div class="form-wrapper sign-up">
         <h3>Sign Up</h3>
         <form>
+          <div class="inline">
+            <label>
+              Firstname:
+              <input
+                type="text"
+                className=""
+                id="signup-firstname"
+                name="firstname"
+                required
+              />
+              <div className="input-feedback"></div>
+            </label>
+
+            <label>
+              Lastname:
+              <input
+                type="text"
+                className=""
+                id="signup-lastname"
+                name="lastname"
+                required
+              />
+              <div className="input-feedback"></div>
+            </label>
+          </div>
+
+          <label>
+            Username:
+            <input
+              type="text"
+              className=""
+              id="signup-username"
+              name="username"
+              required
+            />
+            <div className="input-feedback"></div>
+          </label>
+
           <label>
             Email:
             <input
@@ -105,17 +165,25 @@
 
     <!-- USER DASHBOARD -->
     <section class="content">
+      <div class="overlay"></div>
       <nav class="sidebar">
         <ul class="side-nav">
-          <li class="side-nav__item">
+          <li class="side-nav__item project-list">
             <div class="side-nav__item__header">
               <span>
                 <button class="svg-btn" aria-expanded="false">
                   <img
-                    class=""
+                    class="rotate"
                     src="./assets/arrowdown.svg"
                     alt="check button"
                   />
+                  <!-- <svg width="16px" height="16px" viewBox="0 0 16 16">
+                    <g transform="translate(-266, -17)" fill="#777777">
+                      <path
+                        d="M280,22.7581818 L279.1564,22 L273.9922,26.506 L273.4414,26.0254545 L273.4444,26.0281818 L268.8562,22.0245455 L268,22.7712727 C269.2678,23.878 272.8084,26.9674545 273.9922,28 C274.8718,27.2330909 274.0144,27.9809091 280,22.7581818"
+                      ></path>
+                    </g>
+                  </svg> -->
                 </button>
                 <span>Projects</span>
               </span>
@@ -124,14 +192,18 @@
                 <img src="./assets/plus.svg" alt="plus icon" />
               </button>
             </div>
-
-            <ul class="side-nav__item__dropdown"></ul>
           </li>
-          <li class="side-nav__item">
+          <ul class="side-nav__item__dropdown"></ul>
+
+          <!-- <li class="side-nav__item">
             <div class="side-nav__item__header">
               <span>
                 <button class="svg-btn">
-                  <img src="./assets/arrowdown.svg" alt="check button" />
+                  <img
+                    class="rotate"
+                    src="./assets/arrowdown.svg"
+                    alt="check button"
+                  />
                 </button>
                 <span>Completed</span>
               </span>
@@ -145,7 +217,11 @@
             <div class="side-nav__item__header">
               <span>
                 <button class="svg-btn">
-                  <img src="./assets/arrowdown.svg" alt="check button" />
+                  <img
+                    class="rotate"
+                    src="./assets/arrowdown.svg"
+                    alt="check button"
+                  />
                 </button>
                 <span>Ongoing</span>
               </span>
@@ -154,7 +230,7 @@
                 <img src="./assets/plus.svg" alt="plus icon" />
               </button>
             </div>
-          </li>
+          </li> -->
         </ul>
       </nav>
 
@@ -188,9 +264,9 @@
         </section>
 
         <div class="welcome-msg">
+          <img src="./assets/checkbox.png" alt="Tracker Icon">
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia
-            saepe accusamus voluptatibus porro illo.
+            Keep Track of your Goals.
           </p>
           <button class="add-goal-btn">Add a Goal Today</button>
         </div>
@@ -269,25 +345,31 @@
     <script>
       // function to set a given theme/color-scheme
       function setTheme(themeName) {
-        localStorage.setItem('theme', themeName);
+        localStorage.setItem("theme", themeName);
         document.documentElement.className = themeName;
       }
       // function to toggle between light and dark theme
       function toggleTheme() {
-        if (localStorage.getItem('theme') === 'theme-dark') {
-          setTheme('theme-light');
+        if (localStorage.getItem("theme") === "theme-dark") {
+          document.querySelector('img.toggle-state-icon').src = './assets/sun.svg';
+          setTheme("theme-light");
         } else {
-          setTheme('theme-dark');
+          document.querySelector('img.toggle-state-icon').src = './assets/half-moon.svg';
+          setTheme("theme-dark");
         }
       }
       // Immediately invoked function to set the theme on initial load
       (function () {
-        if (localStorage.getItem('theme') === 'theme-dark') {
-          setTheme('theme-dark');
+        if (localStorage.getItem("theme") === "theme-dark") {
+          document.querySelector('img.toggle-state-icon').src = './assets/half-moon.svg';
+
+          setTheme("theme-dark");
         } else {
-          setTheme('theme-light');
+          document.querySelector('img.toggle-state-icon').src = './assets/sun.svg';
+
+          setTheme("theme-light");
         }
-      })();
+      })();     
     </script>
     <script src="auth.js"></script>
     <script src="script.js"></script>

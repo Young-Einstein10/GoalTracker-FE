@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Testing Custom Events</title>
+  </head>
+
+  <style>
+    section {
+      display: none;
+    }
+
+    section.show {
+      display: block;
+    }
+  </style>
+
+  <body>
+    <section class="">
+      <h1>
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Corrupti
+        corporis possimus incidunt? Nesciunt necessitatibus illum nisi
+        architecto ipsa praesentium error natus neque temporibus tempore,
+        voluptates in perspiciatis voluptate, culpa aliquid.
+      </h1>
+    </section>
+
+    <button>Toggle</button>
+
+    <script>
+      const button = document.querySelector("button");
+      const section = document.querySelector("section");
+
+      button.addEventListener("click", function () {
+        section.classList.toggle("show");
+        handleCustomEvent();
+      });
+
+      section.addEventListener("onPageDisplay", function () {
+        changeColor();
+      });
+
+      function changeColor() {
+        section.style.color = "blue";
+      }
+
+      function handleCustomEvent() {
+        const event = new CustomEvent("onPageDisplay");
+
+        section.dispatchEvent(event);
+      }
+    </script>
+  </body>
+</html>

@@ -3,8 +3,9 @@ const $ = (element) => document.querySelector(element);
 const script_base_url = "https://einstein-goal-tracker.herokuapp.com";
 
 // ADD PROJECT/GOAL BUTTON
-const svgBtn = $(".svg-btn");
-const projectDropDown = $(".side-nav__item__dropdown");
+const projects = $("li.project-list");
+const dropDownIcon = $("button.svg-btn img");
+const projectDropDown = $("ul.side-nav__item__dropdown");
 const addGoalBtn = $(".add-goal-btn");
 
 // MODAL
@@ -25,23 +26,27 @@ function windowOnClick(event) {
 // Listeners for showing Add Project Form
 trigger.addEventListener("click", toggleModal);
 closeButton.addEventListener("click", toggleModal);
-addGoalBtn.addEventListener("click", toggleModal);
+addGoalBtn.addEventListener("click", () => {
+  closeMenu();
+  toggleModal();
+});
 window.addEventListener("click", windowOnClick);
 
 // Listener for Project/Goal
-svgBtn.addEventListener("click", showDropDown);
+dropDownIcon.addEventListener("click", showDropDown);
 
 function showDropDown(e) {
-  const elem = e.target;
+  // const elem = e.target;
 
-  if (elem.parentElement.getAttribute("aria-expanded") == false) {
-    elem.parentElement.setAttribute("aria-expanded", true);
-    elem.classList.toggle("rotate");
-  } else {
-    elem.parentElement.setAttribute("aria-expanded", false);
-    elem.classList.toggle("rotate");
-  }
+  // if (elem.parentElement.getAttribute("aria-expanded") == false) {
+  //   elem.parentElement.setAttribute("aria-expanded", true);
+  //   elem.classList.toggle("rotate");
+  // } else {
+  //   elem.parentElement.setAttribute("aria-expanded", false);
+  //   elem.classList.toggle("rotate");
+  // }
   // console.log(elem.parentElement.getAttribute("aria-expanded"));
+  dropDownIcon.classList.toggle("rotate");
   projectDropDown.classList.toggle("show-goal-dropdown");
 }
 
@@ -522,6 +527,7 @@ const displayGoals = (goals) => {
     li.setAttribute("created_on", eachGoal.created_on);
     li.addEventListener("click", (e) => {
       getProjectGoal(eachGoal.id);
+      closeMenu();
     });
 
     // optionSpan.className = "more-options-icon";
@@ -595,6 +601,13 @@ const getProjectGoal = (goalId) => {
 // window.addEventListener("DOMContentLoaded", getAllGoals);
 if (AuthState.isAuthenticated) {
   getAllGoals();
+  document.querySelectorAll(".hide-when-signed-in").forEach((item) => {
+    item.classList.add("hide");
+  });
+} else {
+  document.querySelectorAll(".hide-when-signed-out").forEach((item) => {
+    item.classList.add("hide");
+  });
 }
 
 // ADD LISTENER ON ADD PROJECT FORM
@@ -796,4 +809,32 @@ const handleTodoSubmit = async (event) => {
   }
 };
 
-// Event Listener
+// Functiom To Handle Sidebar Toggle
+const closeBtn = document.querySelector("button.close-icon");
+const menuBtn = document.querySelector("button.menu-icon");
+const sideBar = document.querySelector("nav.sidebar");
+const overLay = document.querySelector("div.overlay");
+
+menuBtn.addEventListener("click", openMenu);
+closeBtn.addEventListener("click", closeMenu);
+window.addEventListener("click", closeOverlay);
+
+function openMenu(e) {
+  sideBar.style.left = "0";
+  menuBtn.style.display = "none";
+  closeBtn.style.display = "block";
+  overLay.style.display = "block";
+}
+
+function closeMenu(e) {
+  sideBar.style.left = "-280px";
+  menuBtn.style.display = "flex";
+  closeBtn.style.display = "none";
+  overLay.style.display = "none";
+}
+
+function closeOverlay(e) {
+  if (e.target == overLay) {
+    closeMenu();
+  }
+}

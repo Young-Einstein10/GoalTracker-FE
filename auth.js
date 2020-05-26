@@ -77,6 +77,7 @@ const signOut = () => {
     credentials: {},
   };
   console.log(AuthState);
+  window.location.href = "/";
   routeToSignInPage();
 };
 
