@@ -22,34 +22,47 @@ html {
   --color-primary: #110e0e;
   --color-primary-2: hsla(0, 2%, 24%, 0.87);
 
-  --color-background: #b9b9b9;
+  --color-background: #f7f7f7;
   --color-background-2: #e0dede;
-  --color-background-3: #f7f7f7;
+  --color-background-3: #fafafa;
   --color-background-4: #aaaaaa;
+  --color-background-nav: #316fea;
+  --color-header: #fafafa;
+  --background-btn: #316fea;
   --blue: #316fea;
   --red: #db4c3f;
 
-  --line: solid 1px #141313;
+  --line: 1px solid #f1f1f1;
 
-  --svg-fill-path-nav: #141313;
-  --svg-fill-path: #e2e2e2;
+  --svg-fill-path-nav: #fff;
+  --svg-fill-path: #110e0e;
   --svg-fill-path-2: #999;
   --svg-fill-path-hover: #202020;
+  --svg-btn-hover-background: var(--color-background-2);
+  --svg-header-btn-hover: #1a8eff;
+  --svg-btn-hover-radius: .3rem;
 }
 
 .theme-dark {
   --color-primary: #e2e2e2;
   --color-primary-2: hsla(0, 0%, 100%, 0.87);
+  --color-hover: #2cb978;
 
   --color-background: #282828;
   --color-background-2: #363636;
   --color-background-3: #1f1f1f;
   --color-background-4: #171717;
+  --color-header: #fafafa;
+  --color-background-nav: #282828;
+  --background-btn: #e2e2e2;
 
   --line: solid 1px hsla(0, 0%, 100%, 0.1);
 
   --svg-fill-path-nav: #fff;
   --svg-fill-path: #e2e2e2;
+  --svg-header-btn-hover: hsla(0, 0%, 100%, .2);
+  --svg-btn-hover-background: hsla(0, 0%, 100%, .2);
+  --svg-btn-hover-radius: .3rem;
 }
 
 
@@ -68,6 +81,11 @@ body {
   min-height: 100vh;
 }
 
+button {
+  background: var(--background-btn);
+  color: var(--color-background-3);
+}
+
 button:hover,
 span.links:hover {
   cursor: pointer;
@@ -77,11 +95,12 @@ span.links:hover {
 header {
   font-size: 1.4rem;
   height: 6rem;
-  background-color: var(--color-background);
+  background-color: var(--color-background-nav);
   border-bottom: var(--line);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color: var(--color-header);
 }
 
 header div.menu-nav {
@@ -103,8 +122,12 @@ button.close-icon {
 
 button.menu-icon:hover,
 button.close-icon:hover {
-  background-color: hsla(0, 0%, 100%, .2);
-  border-radius: .3rem;
+  background-color: var(--svg-header-btn-hover);
+  border-radius: var(--svg-btn-hover-radius);
+}
+
+nav.sidebar svg path {
+  fill: var(--svg-fill-path);
 }
 
 div.menu-nav svg path {
@@ -130,6 +153,7 @@ nav .user-nav__item {
 button#switch {
   border: 0;
   background: none;
+  outline: none;
 }
 
 .user-nav__item button {
@@ -202,7 +226,7 @@ div.form-wrapper form label input {
 
 div.form-wrapper form button {
   padding: 0.8rem 0;
-  background: #2cb978;
+  background: var(--background-btn);
   border: 0;
   border-radius: 3px;
   color: #fff;
@@ -254,9 +278,10 @@ nav.sidebar {
 ul.side-nav {
   list-style: none;
   margin-top: 3.5rem;
-  margin-left: 3rem;
+  margin-left: 2rem;
   width: 100%;
   font-weight: 600;
+  margin-right: 2rem;
 }
 
 ul.side-nav .side-nav__item div.side-nav__item__header {
@@ -329,12 +354,18 @@ ul.side-nav .side-nav__item div button:last-child {
   border: none;
 }
 
-button.svg-btn img {
+button.svg-btn svg {
+  transform: rotate(-90deg);
   transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 }
 
-img.rotate {
+button.home-btn svg {
   transform: rotate(-90deg);
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+button.svg-btn svg.rotate {
+  transform: rotate(0deg);
   transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 }
 
@@ -412,9 +443,14 @@ p.todos-intro__goal {
   justify-content: space-between;
 }
 
-span.todos-intro__goal__options img {
+span.todos-intro__goal__options svg {
   margin-right: 2rem;
   cursor: pointer;
+}
+
+span.todos-intro__goal__options svg:hover {
+  background-color: var(--svg-btn-hover-background);
+  border-radius: var(--svg-btn-hover-radius);
 }
 
 p.todos-intro__btn {
@@ -449,6 +485,12 @@ span.todos-list__item__options {
 span.todos-list__item__options img {
   margin-right: 2rem;
 }
+
+/* span.todos-list__item__options img:hover {
+  background-color: var(--svg-btn-hover-background);
+  border-radius: var(--svg-btn-hover-radius);
+  padding: .3rem;
+} */
 
 @media screen and (max-width: 576px) {
   span.todos-list__item__options img {
@@ -544,6 +586,7 @@ div.welcome-msg img {
 }
 
 .welcome-msg button {
+  background: var(--background-btn);
   margin-top: 15px;
   padding: 1rem 2rem;
   border-radius: 3px;
@@ -602,7 +645,8 @@ div.welcome-msg img {
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: var(--color-background);
-  width: 60rem;
+  max-width: 60rem;
+  width: 90%;
   border-radius: 0.5rem;
 }
 

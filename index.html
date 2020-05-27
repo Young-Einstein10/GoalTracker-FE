@@ -168,28 +168,40 @@
       <div class="overlay"></div>
       <nav class="sidebar">
         <ul class="side-nav">
+          <li class="side-nav__item link-to-homepage">
+            <div class="side-nav__item__header">
+              <span>
+                <button class="home-btn">
+                  <svg class="home" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16.59 8.29501L12 12.875L7.41 8.29501L6 9.70501L12 15.705L18 9.70501L16.59 8.29501Z" fill="#e2e2e2"
+                      fill-opacity="0.54" />
+                  </svg>                </button>
+                <span>Home</span>
+              </span>
+            </div>
+          </li>
           <li class="side-nav__item project-list">
             <div class="side-nav__item__header">
               <span>
                 <button class="svg-btn" aria-expanded="false">
-                  <img
+                  <!-- <img
                     class="rotate"
                     src="./assets/arrowdown.svg"
                     alt="check button"
-                  />
-                  <!-- <svg width="16px" height="16px" viewBox="0 0 16 16">
-                    <g transform="translate(-266, -17)" fill="#777777">
-                      <path
-                        d="M280,22.7581818 L279.1564,22 L273.9922,26.506 L273.4414,26.0254545 L273.4444,26.0281818 L268.8562,22.0245455 L268,22.7712727 C269.2678,23.878 272.8084,26.9674545 273.9922,28 C274.8718,27.2330909 274.0144,27.9809091 280,22.7581818"
-                      ></path>
-                    </g>
-                  </svg> -->
+                  /> -->
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16.59 8.29501L12 12.875L7.41 8.29501L6 9.70501L12 15.705L18 9.70501L16.59 8.29501Z" fill="#e2e2e2"
+                      fill-opacity="0.54" />
+                  </svg>
                 </button>
                 <span>Projects</span>
               </span>
 
               <button class="add-modal-btn">
-                <img src="./assets/plus.svg" alt="plus icon" />
+                <!-- <img src="./assets/plus.svg" alt="plus icon" /> -->
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="" fill-opacity="0.54" />
+                </svg>
               </button>
             </div>
           </li>
@@ -250,7 +262,14 @@
                 <span class="links edit-todo-cancelBtn">Cancel</span>
               </div>
             </form>
-            <p class="todos-intro__btn"><span>+</span> Add Task</p>
+            <p class="todos-intro__btn">
+              <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" data-svgs-path="sm1/plus.svg">
+                  <path fill="currentColor" fill-rule="evenodd"
+                    d="M6 6V.5a.5.5 0 0 1 1 0V6h5.5a.5.5 0 1 1 0 1H7v5.5a.5.5 0 1 1-1 0V7H.5a.5.5 0 0 1 0-1H6z"></path>
+                </svg>
+              </span> Add Task
+            </p>
           </div>
           <form action="#" class="add-todo">
             <label for="todo-input">

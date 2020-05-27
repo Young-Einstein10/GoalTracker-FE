@@ -4,7 +4,7 @@ const script_base_url = "https://einstein-goal-tracker.herokuapp.com";
 
 // ADD PROJECT/GOAL BUTTON
 const projects = $("li.project-list");
-const dropDownIcon = $("button.svg-btn img");
+const dropDownIcon = $("button.svg-btn svg");
 const projectDropDown = $("ul.side-nav__item__dropdown");
 const addGoalBtn = $(".add-goal-btn");
 
@@ -204,17 +204,44 @@ const handleDeleteGoal = async (event) => {
   }
 };
 
+const linkToHome = $(".link-to-homepage");
+linkToHome.addEventListener("click", showHomepage);
+
+function showHomepage() {
+  $("div.welcome-msg").style.display = "block";
+  $("section.todos").style.display = "none";
+  closeMenu();
+}
+
+function closeHomepage() {
+  $("div.welcome-msg").style.display = "none";
+  $("section.todos").style.display = "block";
+}
+
 const showProjectTodos = (goal) => {
   const { todos, body, id: goalId, is_achieved, created_on } = goal;
 
   // Project Header
-  $("div.welcome-msg").style.display = "none";
-  $("section.todos").style.display = "block";
+  closeHomepage();
   $("p.todos-intro__goal").innerHTML = `
     <span class="text">${body}</span>
     <span class="todos-intro__goal__options">
-      <img class="edit-goal" src="./assets/edit.svg" alt="edit button">
-      <img class="delete-goal" src="./assets/delete.svg" alt="delete button">
+      <svg class="edit-goal" xmlns="http://www.w3.org/2000/svg" width="24" height="24" data-svgs-path="sm1/edit.svg" class="form_action_icon">
+        <g fill="none" fill-rule="evenodd">
+          <path fill="currentColor" d="M9.5 19h10a.5.5 0 1 1 0 1h-10a.5.5 0 1 1 0-1z"></path>
+          <path stroke="currentColor"
+            d="M4.42 16.03a1.5 1.5 0 0 0-.43.9l-.22 2.02a.5.5 0 0 0 .55.55l2.02-.21a1.5 1.5 0 0 0 .9-.44L18.7 7.4a1.5 1.5 0 0 0 0-2.12l-.7-.7a1.5 1.5 0 0 0-2.13 0L4.42 16.02z">
+          </path>
+        </g>
+      </svg>
+      <svg class="delete-goal" xmlns="http://www.w3.org/2000/svg" width="24" height="24" data-svgs-path="sm1/trash.svg">
+        <g fill="none" fill-rule="evenodd">
+          <path d="M0 0h24v24H0z"></path>
+          <rect width="14" height="1" x="5" y="6" fill="currentColor" rx=".5"></rect>
+          <path fill="currentColor" d="M10 9h1v8h-1V9zm3 0h1v8h-1V9z"></path>
+          <path stroke="currentColor" d="M17.5 6.5h-11V18A1.5 1.5 0 0 0 8 19.5h8a1.5 1.5 0 0 0 1.5-1.5V6.5zm-9 0h7V5A1.5 1.5 0 0 0 14 3.5h-4A1.5 1.5 0 0 0 8.5 5v1.5z"></path>
+        </g>
+      </svg>
     </span>
   `;
   $("p.todos-intro__goal").id = goalId;
@@ -264,11 +291,13 @@ const showProjectTodos = (goal) => {
 
           editIcon.src = "./assets/edit.svg";
           editIcon.alt = "edit button";
+
           editIcon.addEventListener("mouseover", (e) => showImgOptions(e));
           editIcon.addEventListener("click", () => handleEditTodo());
 
           delIcon.src = "./assets/delete.svg";
           delIcon.alt = "delete button";
+
           delIcon.addEventListener("mouseover", (e) => showImgOptions(e));
           delIcon.addEventListener("click", (e) => deleteTodo(e));
 
@@ -532,7 +561,13 @@ const displayGoals = (goals) => {
 
     // optionSpan.className = "more-options-icon";
 
-    checkboxSpan.innerHTML = `<img src="./assets/circle.svg" alt="check button" />`;
+    checkboxSpan.innerHTML = `
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd"
+        d="M4 12C4 7.58 7.58002 4 12 4C16.42 4 20 7.58 20 12C20 16.42 16.42 20 12 20C7.58002 20 4 16.42 4 12ZM18 12C18 8.69 15.31 6 12 6C8.69 6 6 8.69 6 12C6 15.31 8.69 18 12 18C15.31 18 18 15.31 18 12Z"
+        fill="" fill-opacity="0.54" />
+      </svg>
+    `;
     textSpan.className = "goal-text";
     textSpan.textContent = `${eachGoal.body}`;
     // optionSpan.innerHTML = `<img src="./assets/more_vert.svg" alt="More Options" />`;
@@ -688,10 +723,10 @@ const handleMouseOver = (event) => {
   const btn = $(".todos-intro__btn");
   const btnSpan = $(".todos-intro__btn span");
   if (event.target === btn) {
-    btn.style.color = "#2cb978";
-    btnSpan.style.background = "#2cb978";
-    btnSpan.style.color = "var(--color-primary-light)";
-    btnSpan.style.borderRadius = "50px";
+    btnSpan.style.color = "var(--color-primary)";
+    btn.style.color = "var(--color-hover)";
+    btnSpan.style.background = "var(--color-hover)";
+    btnSpan.style.borderRadius = "5rem";
   }
 };
 
