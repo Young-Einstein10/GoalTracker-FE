@@ -1,6 +1,6 @@
 const $ = (element) => document.querySelector(element);
-const script_base_url = "http://localhost:5000";
-// const script_base_url = "https://einstein-goal-tracker.herokuapp.com";
+// const script_base_url = "http://localhost:5000";
+const script_base_url = "https://einstein-goal-tracker.herokuapp.com";
 
 // ADD PROJECT/GOAL BUTTON
 const projects = $("li.project-list");
@@ -265,67 +265,13 @@ const showProjectTodos = (goal) => {
            */
           const li = document.createElement("li");
           const checkbox = document.createElement("span");
-          const label = document.createElement("label");
-          const inputCheck = document.createElement("input");
-          const childLabel = document.createElement("label");
           const textSpan = document.createElement("span");
           const moreOptions = document.createElement("span");
-
-          const svgEditIcon = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "svg"
-          );
-          const svgDeleteIcon = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "svg"
-          );
-
-          svgEditIcon.dataset.name = todo.id;
-          svgEditIcon.setAttribute("width", "24");
-          svgEditIcon.setAttribute("height", "24");
-          svgEditIcon.setAttribute("data-svgs-path", "sm1/edit.svg");
-          svgEditIcon.setAttribute("class", "form_action_icon");
-
-          svgDeleteIcon.dataset.name = todo.id;
-          svgDeleteIcon.setAttribute("width", "24");
-          svgDeleteIcon.setAttribute("height", "24");
-          svgDeleteIcon.setAttribute("data-svgs-path", "sm1/trash.svg");
-          svgDeleteIcon.setAttribute("class", "form_action_icon");
-
-          svgEditIcon.innerHTML = `
-            <g fill="none" fill-rule="evenodd">
-              <path fill="currentColor" d="M9.5 19h10a.5.5 0 1 1 0 1h-10a.5.5 0 1 1 0-1z"></path>
-              <path stroke="currentColor"
-                d="M4.42 16.03a1.5 1.5 0 0 0-.43.9l-.22 2.02a.5.5 0 0 0 .55.55l2.02-.21a1.5 1.5 0 0 0 .9-.44L18.7 7.4a1.5 1.5 0 0 0 0-2.12l-.7-.7a1.5 1.5 0 0 0-2.13 0L4.42 16.02z">
-              </path>
-            </g>
-          `;
-
-          svgDeleteIcon.innerHTML = `
-          <g fill="none" fill-rule="evenodd">
-            <path d="M0 0h24v24H0z"></path>
-            <rect width="14" height="1" x="5" y="6" fill="currentColor" rx=".5"></rect>
-            <path fill="currentColor" d="M10 9h1v8h-1V9zm3 0h1v8h-1V9z"></path>
-            <path stroke="currentColor" d="M17.5 6.5h-11V18A1.5 1.5 0 0 0 8 19.5h8a1.5 1.5 0 0 0 1.5-1.5V6.5zm-9 0h7V5A1.5 1.5 0 0 0 14 3.5h-4A1.5 1.5 0 0 0 8.5 5v1.5z"></path>
-          </g>
-          `;
+          const editIcon = document.createElement("img");
+          const delIcon = document.createElement("img");
 
           li.id = todo.id;
           li.className = "todos-list__item";
-
-          inputCheck.type = "checkbox";
-          inputCheck.checked = todo.is_done;
-          inputCheck.dataset.name = todo.id;
-          inputCheck.onchange = (e) => handleCheckBox(e);
-
-          // Intercept Todo State whether its done or not, if done strikethrough text else do not strikethrough
-
-          if (todo.is_done) {
-            textSpan.style.textDecoration = "line-through";
-          } else {
-            textSpan.style.textDecoration = "";
-          }
-
           li.setAttribute("is_done", todo.is_done);
           li.setAttribute("created_on", todo.created_on);
           li.addEventListener("mouseover", showOptions);
@@ -335,33 +281,28 @@ const showProjectTodos = (goal) => {
           textSpan.className = "todos-list__item__text";
           moreOptions.className = "todos-list__item__options";
 
-          label.appendChild(inputCheck);
-          label.appendChild(childLabel);
-          checkbox.appendChild(label);
-
+          checkbox.innerHTML = `
+            <label>
+              <input id="c1" type="checkbox">
+              <label for="c1"></label>
+            </label>
+          `;
           textSpan.textContent = todo.body;
 
-          svgEditIcon.addEventListener("mouseover", (e) =>
-            showImgOptions(e, todo.id)
-          );
-          svgEditIcon.addEventListener("mouseout", (e) =>
-            removeImgOptions(e, todo.id)
-          );
-          svgEditIcon.addEventListener("click", (e) => handleEditTodo(e));
+          editIcon.src = "./assets/edit.svg";
+          editIcon.alt = "edit button";
 
-          svgDeleteIcon.addEventListener("mouseover", (e) =>
-            showImgOptions(e, todo.id)
-          );
-          svgDeleteIcon.addEventListener("mouseout", (e) =>
-            removeImgOptions(e, todo.id)
-          );
+          editIcon.addEventListener("mouseover", (e) => showImgOptions(e));
+          editIcon.addEventListener("click", () => handleEditTodo());
 
-          svgDeleteIcon.addEventListener("click", (e) => deleteTodo(e));
+          delIcon.src = "./assets/delete.svg";
+          delIcon.alt = "delete button";
 
-          // Append svg delete and edit icon
-          moreOptions.appendChild(svgEditIcon);
-          moreOptions.appendChild(svgDeleteIcon);
+          delIcon.addEventListener("mouseover", (e) => showImgOptions(e));
+          delIcon.addEventListener("click", (e) => deleteTodo(e));
 
+          moreOptions.appendChild(editIcon);
+          moreOptions.appendChild(delIcon);
           li.appendChild(checkbox);
           li.appendChild(textSpan);
           li.appendChild(moreOptions);
@@ -373,7 +314,7 @@ const showProjectTodos = (goal) => {
 
 // Listener for Edit Todo Cancel Button
 $(".edit-todo-cancelBtn").addEventListener("click", (event) => {
-  const selectedTodoID = event.target.dataset.name;
+  const selectedTodoID = event.target.id;
   // console.log(document.getElementById(selectedTodoID));
   const currTodo = document.getElementById(selectedTodoID);
   // Show TodoItem
@@ -388,19 +329,17 @@ $("form.edit-todo").addEventListener("submit", (e) => {
 
   let todoId, goalId;
 
-  // Grab Data ID from Form
-  todoId = e.target.dataset.name;
-  // Grab Goal ID from Section Header
+  todoId = e.target.id;
   goalId = e.target.parentElement.firstElementChild.id;
 
   editTodo(e, todoId, goalId);
 });
 
-const handleEditTodo = async (event) => {
+const handleEditTodo = () => {
   console.log("Editing...");
   // Get Current Value of Item Clicked
-  const currTodo = await event.target.parentElement.parentElement;
-  console.log(currTodo);
+  const currTodo = event.target.parentElement.parentElement;
+
   // Hide TodoItem
   currTodo.style.display = "none";
 
@@ -408,10 +347,10 @@ const handleEditTodo = async (event) => {
   $("form.edit-todo").style.display = "flex";
 
   // Give Add Todo Form ID of Selected todoItem which will be used to display Selected TodoItem back
-  $("form.edit-todo").dataset.name = currTodo.id;
+  $("form.edit-todo").id = currTodo.id;
 
-  // ALso give a Data ID to the cancel button within form
-  $("form.edit-todo").querySelector("span.edit-todo-cancelBtn").dataset.name =
+  // ALso give an ID to the cancel button within form
+  $("form.edit-todo").querySelector("span.edit-todo-cancelBtn").id =
     currTodo.id;
 
   // Access Current Todo Text Value from Second Child Element
@@ -449,7 +388,7 @@ const editTodo = async (event, todoId, goalId) => {
 
     const data = await response.json();
 
-    if (data.status === "success") {
+    if (data.status == "success") {
       // Hide EDit Todo Form
       $("form.edit-todo").style.display = "none";
 
@@ -458,100 +397,40 @@ const editTodo = async (event, todoId, goalId) => {
 
       // Create Newly Updated Child Elements For ListItem (current todo being edited)
       const checkbox = document.createElement("span");
-      const label = document.createElement("label");
-      const inputCheck = document.createElement("input");
-      const childLabel = document.createElement("label");
       const textSpan = document.createElement("span");
       const moreOptions = document.createElement("span");
-      const svgEditIcon = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "svg"
-      );
-      const svgDeleteIcon = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "svg"
-      );
-
-      svgEditIcon.dataset.name = data.data[0].id;
-      svgEditIcon.setAttribute("width", "24");
-      svgEditIcon.setAttribute("height", "24");
-      svgEditIcon.setAttribute("data-svgs-path", "sm1/edit.svg");
-      svgEditIcon.setAttribute("class", "form_action_icon");
-
-      svgDeleteIcon.dataset.name = data.data[0].id;
-      svgDeleteIcon.setAttribute("width", "24");
-      svgDeleteIcon.setAttribute("height", "24");
-      svgDeleteIcon.setAttribute("data-svgs-path", "sm1/trash.svg");
-      svgDeleteIcon.setAttribute("class", "form_action_icon");
-
-      svgEditIcon.innerHTML = `
-            <g fill="none" fill-rule="evenodd">
-              <path fill="currentColor" d="M9.5 19h10a.5.5 0 1 1 0 1h-10a.5.5 0 1 1 0-1z"></path>
-              <path stroke="currentColor"
-                d="M4.42 16.03a1.5 1.5 0 0 0-.43.9l-.22 2.02a.5.5 0 0 0 .55.55l2.02-.21a1.5 1.5 0 0 0 .9-.44L18.7 7.4a1.5 1.5 0 0 0 0-2.12l-.7-.7a1.5 1.5 0 0 0-2.13 0L4.42 16.02z">
-              </path>
-            </g>
-          `;
-
-      svgDeleteIcon.innerHTML = `
-          <g fill="none" fill-rule="evenodd">
-            <path d="M0 0h24v24H0z"></path>
-            <rect width="14" height="1" x="5" y="6" fill="currentColor" rx=".5"></rect>
-            <path fill="currentColor" d="M10 9h1v8h-1V9zm3 0h1v8h-1V9z"></path>
-            <path stroke="currentColor" d="M17.5 6.5h-11V18A1.5 1.5 0 0 0 8 19.5h8a1.5 1.5 0 0 0 1.5-1.5V6.5zm-9 0h7V5A1.5 1.5 0 0 0 14 3.5h-4A1.5 1.5 0 0 0 8.5 5v1.5z"></path>
-          </g>
-          `;
+      const editIcon = document.createElement("img");
+      const delIcon = document.createElement("img");
 
       checkbox.className = "todos-list__item__checkbox";
       textSpan.className = "todos-list__item__text";
       moreOptions.className = "todos-list__item__options";
 
-      inputCheck.type = "checkbox";
-      inputCheck.checked = data.data[0].is_done;
-      inputCheck.dataset.name = data.data[0].id;
-      inputCheck.onchange = (e) => handleCheckBox(e);
-
-      label.appendChild(inputCheck);
-      label.appendChild(childLabel);
-      checkbox.appendChild(label);
-
-      // Intercept Todo State whether its done or not, if done strikethrough text else do not strikethrough
-      if (data.data[0].is_done) {
-        textSpan.style.textDecoration = "line-through";
-      } else {
-        textSpan.style.textDecoration = "";
-      }
-
+      checkbox.innerHTML = `
+        <label>
+          <input id="c1" type="checkbox">
+          <label for="c1"></label>
+        </label>
+      `;
       textSpan.textContent = data.data[0].body;
 
-      svgEditIcon.addEventListener("mouseover", (e) =>
-        showImgOptions(e, data.data[0].id)
-      );
-      svgEditIcon.addEventListener("mouseout", (e) =>
-        removeImgOptions(e, data.data[0].id)
-      );
-      svgEditIcon.addEventListener("click", (e) => handleEditTodo(e));
+      editIcon.src = "./assets/edit.svg";
+      editIcon.alt = "edit button";
+      editIcon.addEventListener("mouseover", (e) => showImgOptions(e));
+      editIcon.addEventListener("click", () => handleEditTodo());
 
-      svgDeleteIcon.addEventListener("mouseover", (e) =>
-        showImgOptions(e, data.data[0].id)
-      );
-      svgDeleteIcon.addEventListener("mouseout", (e) =>
-        removeImgOptions(e, data.data[0].id)
-      );
+      delIcon.src = "./assets/delete.svg";
+      delIcon.alt = "delete button";
+      delIcon.addEventListener("mouseover", (e) => showImgOptions(e));
+      delIcon.addEventListener("click", (e) => deleteTodo(e));
 
-      svgDeleteIcon.addEventListener("click", (e) => deleteTodo(e));
-
-      // Append svg delete and edit icon
-      moreOptions.appendChild(svgEditIcon);
-      moreOptions.appendChild(svgDeleteIcon);
+      moreOptions.appendChild(editIcon);
+      moreOptions.appendChild(delIcon);
 
       // Set Current Todo's to newly created child elements
       currTodo.appendChild(checkbox);
       currTodo.appendChild(textSpan);
       currTodo.appendChild(moreOptions);
-
-      // Set IS_DONE Attribute for Todo
-      // currTodo.setAttribute("is_done", data.data[0].is_done);
 
       // Show TodoItem
       currTodo.style.display = "flex";
@@ -609,17 +488,10 @@ const deleteTodo = async (event) => {
   }
 };
 
-async function showImgOptions(e, todoId) {
-  if (e.target.dataset.name === todoId) {
-    e.target.parentElement.style.visibility = "visible";
-  }
-}
-
-async function removeImgOptions(e, todoId) {
-  if (e.target.dataset.name === todoId) {
-    e.target.parentElement.style.visibility = "visible";
-  }
-}
+const showImgOptions = (e) => {
+  // console.log("Mouseovering...", e.target);
+  e.target.parentElement.style.visibility = "visible";
+};
 
 const showOptions = (event) => {
   // console.log("Mouseovering...", event.target);
@@ -645,7 +517,7 @@ const hideOptions = (event) => {
   });
 };
 
-const getAllGoals = async () => {
+const getAllGoals = () => {
   const url = `${script_base_url}/api/v1/goals/`;
 
   const headers = new Headers({
@@ -653,20 +525,22 @@ const getAllGoals = async () => {
     Authorization: `Bearer ${AuthState.credentials.token}`,
   });
 
-  try {
-    const response = await fetch(url, { headers });
-    const data = await response.json();
-
-    if (data.status === "success") {
-      displayGoals(data.data, "Success");
-    } else if (data.status === "error") {
-      console.log(data);
-      displayMsg(data.error, "Error");
-    }
-  } catch (error) {
-    console.log(error);
-    displayMsg(err.message, "Error");
-  }
+  fetch(url, {
+    headers: headers,
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.status === "success") {
+        displayGoals(data.data, "Success");
+      } else if (data.status === "error") {
+        console.log(data);
+        displayMsg(data.error, "Error");
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      displayMsg(err.message, "Error");
+    });
 };
 
 const displayGoals = (goals) => {
@@ -849,7 +723,7 @@ const handleMouseOver = (event) => {
   const btn = $(".todos-intro__btn");
   const btnSpan = $(".todos-intro__btn span");
   if (event.target === btn) {
-    btnSpan.style.color = "var(--color-add-hover)";
+    btnSpan.style.color = "var(--color-primary)";
     btn.style.color = "var(--color-hover)";
     btnSpan.style.background = "var(--color-hover)";
     btnSpan.style.borderRadius = "5rem";
@@ -890,67 +764,13 @@ const addNewTodoToUI = (data) => {
   // Create New Elements
   const li = document.createElement("li");
   const checkbox = document.createElement("span");
-  const label = document.createElement("label");
-  const inputCheck = document.createElement("input");
-  const childLabel = document.createElement("label");
   const textSpan = document.createElement("span");
   const moreOptions = document.createElement("span");
-
-  const svgEditIcon = document.createElementNS(
-    "http://www.w3.org/2000/svg",
-    "svg"
-  );
-  const svgDeleteIcon = document.createElementNS(
-    "http://www.w3.org/2000/svg",
-    "svg"
-  );
-
-  svgEditIcon.dataset.name = id;
-  svgEditIcon.setAttribute("width", "24");
-  svgEditIcon.setAttribute("height", "24");
-  svgEditIcon.setAttribute("data-svgs-path", "sm1/edit.svg");
-  svgEditIcon.setAttribute("class", "form_action_icon");
-
-  svgDeleteIcon.dataset.name = id;
-  svgDeleteIcon.setAttribute("width", "24");
-  svgDeleteIcon.setAttribute("height", "24");
-  svgDeleteIcon.setAttribute("data-svgs-path", "sm1/trash.svg");
-  svgDeleteIcon.setAttribute("class", "form_action_icon");
-
-  svgEditIcon.innerHTML = `
-            <g fill="none" fill-rule="evenodd">
-              <path fill="currentColor" d="M9.5 19h10a.5.5 0 1 1 0 1h-10a.5.5 0 1 1 0-1z"></path>
-              <path stroke="currentColor"
-                d="M4.42 16.03a1.5 1.5 0 0 0-.43.9l-.22 2.02a.5.5 0 0 0 .55.55l2.02-.21a1.5 1.5 0 0 0 .9-.44L18.7 7.4a1.5 1.5 0 0 0 0-2.12l-.7-.7a1.5 1.5 0 0 0-2.13 0L4.42 16.02z">
-              </path>
-            </g>
-          `;
-
-  svgDeleteIcon.innerHTML = `
-          <g fill="none" fill-rule="evenodd">
-            <path d="M0 0h24v24H0z"></path>
-            <rect width="14" height="1" x="5" y="6" fill="currentColor" rx=".5"></rect>
-            <path fill="currentColor" d="M10 9h1v8h-1V9zm3 0h1v8h-1V9z"></path>
-            <path stroke="currentColor" d="M17.5 6.5h-11V18A1.5 1.5 0 0 0 8 19.5h8a1.5 1.5 0 0 0 1.5-1.5V6.5zm-9 0h7V5A1.5 1.5 0 0 0 14 3.5h-4A1.5 1.5 0 0 0 8.5 5v1.5z"></path>
-          </g>
-          `;
+  const editIcon = document.createElement("img");
+  const delIcon = document.createElement("img");
 
   li.id = id;
   li.className = "todos-list__item";
-
-  inputCheck.type = "checkbox";
-  inputCheck.checked = is_done;
-  inputCheck.dataset.name = id;
-  inputCheck.onchange = (e) => handleCheckBox(e);
-
-  // Intercept Todo State whether its done or not, if done strikethrough text else do not strikethrough
-
-  if (is_done) {
-    textSpan.style.textDecoration = "line-through";
-  } else {
-    textSpan.style.textDecoration = "";
-  }
-
   li.setAttribute("is_done", is_done);
   li.setAttribute("created_on", created_on);
   li.addEventListener("mouseover", showOptions);
@@ -960,25 +780,26 @@ const addNewTodoToUI = (data) => {
   textSpan.className = "todos-list__item__text";
   moreOptions.className = "todos-list__item__options";
 
-  label.appendChild(inputCheck);
-  label.appendChild(childLabel);
-  checkbox.appendChild(label);
-
+  checkbox.innerHTML = `
+            <label>
+              <input id="c1" type="checkbox">
+              <label for="c1"></label>
+            </label>
+          `;
   textSpan.textContent = body;
 
-  svgEditIcon.addEventListener("mouseover", (e) => showImgOptions(e, id));
-  svgEditIcon.addEventListener("mouseout", (e) => removeImgOptions(e, id));
-  svgEditIcon.addEventListener("click", (e) => handleEditTodo(e));
+  editIcon.src = "./assets/edit.svg";
+  editIcon.alt = "edit button";
+  editIcon.addEventListener("mouseover", (e) => showImgOptions(e));
+  editIcon.addEventListener("click", () => handleEditTodo());
 
-  svgDeleteIcon.addEventListener("mouseover", (e) => showImgOptions(e, id));
-  svgDeleteIcon.addEventListener("mouseout", (e) => removeImgOptions(e, id));
+  delIcon.src = "./assets/delete.svg";
+  delIcon.alt = "delete button";
+  delIcon.addEventListener("mouseover", (e) => showImgOptions(e));
+  delIcon.addEventListener("click", (e) => deleteTodo(e));
 
-  svgDeleteIcon.addEventListener("click", (e) => deleteTodo(e));
-
-  // Append svg delete and edit icon
-  moreOptions.appendChild(svgEditIcon);
-  moreOptions.appendChild(svgDeleteIcon);
-
+  moreOptions.appendChild(editIcon);
+  moreOptions.appendChild(delIcon);
   li.appendChild(checkbox);
   li.appendChild(textSpan);
   li.appendChild(moreOptions);
@@ -1052,67 +873,3 @@ function closeOverlay(e) {
     closeMenu();
   }
 }
-
-// Event Listener for Each Checkbox, if checked strikethrough the current todo
-const allCheckboxes = document.querySelectorAll("input[type='checkbox']");
-
-allCheckboxes.forEach((checkbox) => {
-  checkbox.addEventListener("change", (e) => {
-    if (checkbox.checked) {
-      console.log("Item Checked...", e.target.id);
-    }
-  });
-});
-
-const handleCheckBox = (e) => {
-  const todoId = e.target.dataset.name;
-  const todo = document
-    .getElementById(todoId)
-    .querySelector("span.todos-list__item__text");
-  const goalId = document.getElementById(todoId).parentElement.parentElement
-    .previousElementSibling.id;
-
-  const updateTodoWhenChecked = async (is_done_State) => {
-    const url = `http://localhost:5000/api/v1/goals/${goalId}/todos/${todoId}`;
-
-    const headers = new Headers({
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${AuthState.credentials.token}`,
-    });
-
-    try {
-      const response = await fetch(url, {
-        method: "PATCH",
-        headers: headers,
-        body: JSON.stringify({
-          body: todo.textContent,
-          is_done: is_done_State,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (data.status === "success") {
-        document
-          .getElementById(todoId)
-          .setAttribute("is_done", data.data[0].is_done);
-      } else if (data.status === "error") {
-        displayMsg("Error syncing todo with Database", "Error");
-      }
-    } catch (error) {
-      console.log(error);
-      displayMsg(error.message, "Error");
-    }
-  };
-
-  if (e.target.checked) {
-    todo.style.textDecoration = "line-through";
-
-    // Make Request to Update ToDo State in database
-    updateTodoWhenChecked(true);
-  } else {
-    todo.style.textDecoration = "";
-    // Make Request to Update ToDo State in database
-    updateTodoWhenChecked(false);
-  }
-};

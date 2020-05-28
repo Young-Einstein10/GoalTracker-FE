@@ -46,15 +46,11 @@
           <span class="links auth" auth="sign-in">Sign In</span>
         </div>
         <div class="user-nav__item hide-when-signed-out">
-          <button class="links auth signout" auth="sign-out">Sign Out</button>
+          <button class="links auth" auth="sign-out"><b>Sign Out</b></button>
         </div>
         <div class="user-nav__item">
           <button id="switch" onclick="toggleTheme()">
-            <img
-              class="toggle-state-icon"
-              src="./assets/sun.svg"
-              alt="Toggle Icon"
-            />
+            <img class="toggle-state-icon" src="./assets/sun.svg" alt="Toggle Icon">
           </button>
         </div>
       </nav>
@@ -165,16 +161,6 @@
           <div className="input-feedback"></div>
         </form>
       </div>
-
-      <!-- Loading visual cue -->
-      <div id="loading-outer-container" class="spinner">
-        <div id="loading-inner-container">
-          <div id="loadspin">
-            <div id="circle1"></div>
-            <div id="circle2"></div>
-          </div>
-        </div>
-      </div>
     </section>
 
     <!-- USER DASHBOARD -->
@@ -186,21 +172,10 @@
             <div class="side-nav__item__header">
               <span>
                 <button class="home-btn">
-                  <svg
-                    class="home"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M16.59 8.29501L12 12.875L7.41 8.29501L6 9.70501L12 15.705L18 9.70501L16.59 8.29501Z"
-                      fill="#e2e2e2"
-                      fill-opacity="0.54"
-                    />
-                  </svg>
-                </button>
+                  <svg class="home" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16.59 8.29501L12 12.875L7.41 8.29501L6 9.70501L12 15.705L18 9.70501L16.59 8.29501Z" fill="#e2e2e2"
+                      fill-opacity="0.54" />
+                  </svg>                </button>
                 <span>Home</span>
               </span>
             </div>
@@ -214,18 +189,9 @@
                     src="./assets/arrowdown.svg"
                     alt="check button"
                   /> -->
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M16.59 8.29501L12 12.875L7.41 8.29501L6 9.70501L12 15.705L18 9.70501L16.59 8.29501Z"
-                      fill="#e2e2e2"
-                      fill-opacity="0.54"
-                    />
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16.59 8.29501L12 12.875L7.41 8.29501L6 9.70501L12 15.705L18 9.70501L16.59 8.29501Z" fill="#e2e2e2"
+                      fill-opacity="0.54" />
                   </svg>
                 </button>
                 <span>Projects</span>
@@ -233,18 +199,8 @@
 
               <button class="add-modal-btn">
                 <!-- <img src="./assets/plus.svg" alt="plus icon" /> -->
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z"
-                    fill=""
-                    fill-opacity="0.54"
-                  />
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="" fill-opacity="0.54" />
                 </svg>
               </button>
             </div>
@@ -308,21 +264,11 @@
             </form>
             <p class="todos-intro__btn">
               <span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="13"
-                  height="13"
-                  viewBox="0 0 13 13"
-                  data-svgs-path="sm1/plus.svg"
-                >
-                  <path
-                    fill="currentColor"
-                    fill-rule="evenodd"
-                    d="M6 6V.5a.5.5 0 0 1 1 0V6h5.5a.5.5 0 1 1 0 1H7v5.5a.5.5 0 1 1-1 0V7H.5a.5.5 0 0 1 0-1H6z"
-                  ></path>
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" data-svgs-path="sm1/plus.svg">
+                  <path fill="currentColor" fill-rule="evenodd"
+                    d="M6 6V.5a.5.5 0 0 1 1 0V6h5.5a.5.5 0 1 1 0 1H7v5.5a.5.5 0 1 1-1 0V7H.5a.5.5 0 0 1 0-1H6z"></path>
                 </svg>
-              </span>
-              Add Task
+              </span> Add Task
             </p>
           </div>
           <form action="#" class="add-todo">
@@ -337,7 +283,7 @@
         </section>
 
         <div class="welcome-msg">
-          <img src="./assets/checkbox.png" alt="Tracker Icon" />
+          <img src="./assets/checkbox.png" alt="Tracker Icon">
           <p>
             Keep Track of your Goals.
           </p>
@@ -406,14 +352,14 @@
     </div>
 
     <!-- Loading visual cue -->
-    <!-- <div id="loading-outer-container" class="spinner">
+    <div id="loading-outer-container" class="spinner">
       <div id="loading-inner-container">
         <div id="loadspin">
           <div id="circle1"></div>
           <div id="circle2"></div>
         </div>
       </div>
-    </div> -->
+    </div>
 
     <script>
       // function to set a given theme/color-scheme
@@ -424,29 +370,25 @@
       // function to toggle between light and dark theme
       function toggleTheme() {
         if (localStorage.getItem("theme") === "theme-dark") {
-          document.querySelector("img.toggle-state-icon").src =
-            "./assets/sun.svg";
+          document.querySelector('img.toggle-state-icon').src = './assets/sun.svg';
           setTheme("theme-light");
         } else {
-          document.querySelector("img.toggle-state-icon").src =
-            "./assets/half-moon.svg";
+          document.querySelector('img.toggle-state-icon').src = './assets/half-moon.svg';
           setTheme("theme-dark");
         }
       }
       // Immediately invoked function to set the theme on initial load
       (function () {
         if (localStorage.getItem("theme") === "theme-dark") {
-          document.querySelector("img.toggle-state-icon").src =
-            "./assets/half-moon.svg";
+          document.querySelector('img.toggle-state-icon').src = './assets/half-moon.svg';
 
           setTheme("theme-dark");
         } else {
-          document.querySelector("img.toggle-state-icon").src =
-            "./assets/sun.svg";
+          document.querySelector('img.toggle-state-icon').src = './assets/sun.svg';
 
           setTheme("theme-light");
         }
-      })();
+      })();     
     </script>
     <script src="auth.js"></script>
     <script src="script.js"></script>

@@ -21,21 +21,14 @@ html {
 .theme-light {
   --color-primary: #110e0e;
   --color-primary-2: hsla(0, 2%, 24%, 0.87);
-  --color-hover: #316fea;
 
   --color-background: #f7f7f7;
   --color-background-2: #e0dede;
   --color-background-3: #fafafa;
   --color-background-4: #aaaaaa;
-  --color-background-auth-input: ;
-  --color-border-auth-input: 1px solid #aaaaaa;
   --color-background-nav: #316fea;
   --color-header: #fafafa;
   --background-btn: #316fea;
-  --background-auth-btn: #316fea;
-  --color-background-auth-btn: #fff;
-  --color-auth-input: hsla(0, 2%, 24%, 0.87);
-  --color-add-hover: #e2e2e2;
   --blue: #316fea;
   --red: #db4c3f;
 
@@ -48,10 +41,6 @@ html {
   --svg-btn-hover-background: var(--color-background-2);
   --svg-header-btn-hover: #1a8eff;
   --svg-btn-hover-radius: .3rem;
-
-  --active: #316fea;
-  --focus: 2px #316fea;
-  --border-hover: #316fea;
 }
 
 .theme-dark {
@@ -63,15 +52,10 @@ html {
   --color-background-2: #363636;
   --color-background-3: #1f1f1f;
   --color-background-4: #171717;
-  --color-background-auth-input: ;
-  --color-border-auth-input: solid 1px hsla(0, 0%, 100%, 0.1);
   --color-header: #fafafa;
   --color-background-nav: #282828;
   --background-btn: #e2e2e2;
-  --background-auth-btn: #e6e6ee;
-  --color-background-auth-btn: #171717;
-  --color-auth-input: #e2e2e2;
-  --color-add-hover: #e2e2e2;
+
   --line: solid 1px hsla(0, 0%, 100%, 0.1);
 
   --svg-fill-path-nav: #fff;
@@ -79,10 +63,6 @@ html {
   --svg-header-btn-hover: hsla(0, 0%, 100%, .2);
   --svg-btn-hover-background: hsla(0, 0%, 100%, .2);
   --svg-btn-hover-radius: .3rem;
-
-  --active: #2cb978;
-  --focus: 2px #2cb978;
-  --border-hover: #2cb978;
 }
 
 
@@ -104,10 +84,6 @@ body {
 button {
   background: var(--background-btn);
   color: var(--color-background-3);
-}
-
-button.signout {
-  font-weight: 700;
 }
 
 button:hover,
@@ -195,9 +171,7 @@ img.toggle-state-icon {
 section.user-forms {
   height: calc(100vh - 6rem);
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* justify-content: center; */
+  justify-content: center;
   position: relative;
   overflow-y: hidden;
 }
@@ -210,7 +184,7 @@ div.form-wrapper {
   max-width: 60rem;
   width: 100%;
   /* position: absolute;
-  top: 3%; */
+  top: 10%; */
 }
 
 div.form-wrapper h3 {
@@ -248,17 +222,14 @@ div.form-wrapper form label {
 
 div.form-wrapper form label input {
   margin-top: 1rem;
-  background: var(--color-background-auth-input);
-  border: var(--color-border-auth-input);
-  color: var(--color-auth-input);
 }
 
 div.form-wrapper form button {
   padding: 0.8rem 0;
-  background: var(--background-auth-btn);
+  background: var(--background-btn);
   border: 0;
   border-radius: 3px;
-  color: var(--color-background-auth-btn);
+  color: #fff;
   font-size: 2rem;
 }
 
@@ -477,8 +448,7 @@ span.todos-intro__goal__options svg {
   cursor: pointer;
 }
 
-span.todos-intro__goal__options svg:hover,
-span.todos-list__item__options svg:hover {
+span.todos-intro__goal__options svg:hover {
   background-color: var(--svg-btn-hover-background);
   border-radius: var(--svg-btn-hover-radius);
 }
@@ -494,7 +464,7 @@ p.todos-intro__btn span {
   width: 20px;
   display: flex;
   height: 20px;
-  color: var(--color-hover);
+  color: #2cb978;
   justify-content: center;
   align-items: center;
   margin-right: 2rem;
@@ -512,8 +482,8 @@ span.todos-list__item__options {
   visibility: hidden;
 }
 
-span.todos-list__item__options svg {
-  margin-right: 1rem;
+span.todos-list__item__options img {
+  margin-right: 2rem;
 }
 
 /* span.todos-list__item__options img:hover {
@@ -523,7 +493,7 @@ span.todos-list__item__options svg {
 } */
 
 @media screen and (max-width: 576px) {
-  span.todos-list__item__options svg {
+  span.todos-list__item__options img {
     margin-right: 1rem;
   }
 
@@ -735,8 +705,11 @@ div.welcome-msg img {
 
   input[type="checkbox"],
   input[type="radio"] {
+    --active: #2cb978;
     --active-inner: #fff;
+    --focus: 2px #2cb978;
     --border: #bbc1e1;
+    --border-hover: #2cb978;
     --background: var(--color-background-4);
     --disabled: #f6f8ff;
     --disabled-inner: #e1e6f9;
@@ -812,7 +785,7 @@ div.welcome-msg img {
     --o: 1;
   }
 
-  /* input[type="checkbox"]+label,
+  input[type="checkbox"]+label,
   input[type="radio"]+label {
     font-size: 14px;
     line-height: 21px;
@@ -820,7 +793,7 @@ div.welcome-msg img {
     vertical-align: top;
     cursor: pointer;
     margin-left: 4px;
-  } */
+  }
 
   input[type="checkbox"]:not(.switch) {
     border-radius: 50px;
@@ -882,6 +855,8 @@ div.welcome-msg img {
     --s: 0.5;
   }
 }
+
+@media screen and (max-width: 768px) {}
 
 .hide {
   display: none;

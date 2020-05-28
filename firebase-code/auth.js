@@ -44,7 +44,6 @@ authAction.forEach((eachItem) => {
     } else if (chosen === "forgot-password") {
       showForgotPasswordForm();
     } else if (chosen === `sign-out`) {
-      console.log("Sign Out Active");
       signOut();
     }
   });
@@ -126,14 +125,11 @@ const handleSignIn = async (event) => {
     if (data.status == "success") {
       setAuthState(data);
       loading("hide");
-      signInForm.reset();
     } else if (data.status == "error") {
-      loading("hide");
       displayMsg(data.error, "Error");
     }
   } catch (error) {
     console.log(error);
-    loading("hide");
     displayMsg(error.message, "Error");
   }
 };
@@ -178,46 +174,6 @@ const setAuthState = (userDetails) => {
   // routeToDashboard();
 };
 
-const handleSignUp = async (event) => {
-  event.preventDefault();
-
-  // SHOW LOADING SPINNER
-  loading("show");
-
-  const firstname = $$("#signup-firstname").value,
-    lastname = $$("#signup-lastname").value,
-    username = $$("#signup-username").value,
-    email = $$("#signup-email").value,
-    password = $$("#signup-password").value;
-
-  const url = `${base_url}/api/v1/users/create`;
-
-  const headers = new Headers({
-    "Content-Type": "application/json",
-  });
-
-  try {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: headers,
-      body: JSON.stringify({ firstname, lastname, username, email, password }),
-    });
-    const data = await response.json();
-
-    if (data.status === "success") {
-      console.log(data);
-      setAuthState(data);
-      loading("hide");
-      signUpForm.reset();
-    } else if (data.status === "error") {
-      loading("hide");
-      displayMsg(data.error, "Error");
-    }
-  } catch (error) {
-    console.log(error);
-    loading("hide");
-    displayMsg(error.message, "Error");
-  }
-};
+const handleSignUp = async () => {};
 
 // export const auth = new Auth();
