@@ -1,13 +1,13 @@
-/* Loading visual Lesson */
-#loading-outer-container {
-  margin: 40px auto;
+/* loader visual Lesson */
+#loader-outer-container {
+  margin: 0 auto;
 }
 
 .spinner {
   display: none;
 }
 
-#loading-inner-container {
+#loader-inner-container {
   position: relative;
   width: 40px;
   height: 40px;
@@ -51,6 +51,7 @@
 }
 
 @-webkit-keyframes bounce {
+
   0%,
   100% {
     -webkit-transform: scale(0);
@@ -62,6 +63,87 @@
 }
 
 @keyframes bounce {
+
+  0%,
+  100% {
+    transform: scale(0);
+    -webkit-transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1);
+    -webkit-transform: scale(1);
+  }
+}
+
+
+
+/* loader visual Lesson */
+main #loader-outer-container {
+  margin: 40px auto;
+}
+
+main .spinner {
+  display: none;
+}
+
+main #loader-inner-container {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  top: 20%;
+}
+
+main #loaderspin {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  margin: 0 auto;
+}
+
+main #loader-circle2 {
+  background-color: #39b1c6;
+}
+
+main #loader-circle1 {
+  background-color: #ec3f8c;
+}
+
+main #loader-circle1,
+main #loader-circle2 {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  opacity: 0.6;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-animation: bounce 2s infinite ease-in-out;
+  animation: bounce 2s infinite ease-in-out;
+}
+
+main #loader-circle2 {
+  -webkit-animation-delay: -1s;
+  animation-delay: -1s;
+}
+
+@-webkit-keyframes bounce {
+
+  0%,
+  100% {
+    -webkit-transform: scale(0);
+  }
+
+  50% {
+    -webkit-transform: scale(1);
+  }
+}
+
+@keyframes bounce {
+
   0%,
   100% {
     transform: scale(0);

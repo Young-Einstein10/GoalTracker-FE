@@ -1,5 +1,5 @@
-/* Loading visual Lesson */
-#loading-outer-container {
+/* loader visual Lesson */
+#loader-outer-container {
   margin: 0 auto;
 }
 
@@ -7,7 +7,7 @@
   display: none;
 }
 
-#loading-inner-container {
+#loader-inner-container {
   position: relative;
   width: 40px;
   height: 40px;
@@ -78,16 +78,16 @@
 
 
 
-/* Loading visual Lesson */
-/* section.user-forms #loading-outer-container {
+/* loader visual Lesson */
+main #loader-outer-container {
   margin: 40px auto;
 }
 
-section.user-forms .spinner {
+main .spinner {
   display: none;
 }
 
-section.user-forms #loading-inner-container {
+main #loader-inner-container {
   position: relative;
   width: 40px;
   height: 40px;
@@ -97,23 +97,23 @@ section.user-forms #loading-inner-container {
   top: 20%;
 }
 
-section.user-forms #loadspin {
+main #loaderspin {
   width: 40px;
   height: 40px;
   position: absolute;
   margin: 0 auto;
 }
 
-section.user-forms #circle2 {
+main #loader-circle2 {
   background-color: #39b1c6;
 }
 
-section.user-forms #circle1 {
+main #loader-circle1 {
   background-color: #ec3f8c;
 }
 
-section.user-forms #circle1,
-section.user-forms #circle2 {
+main #loader-circle1,
+main #loader-circle2 {
   width: 100%;
   height: 100%;
   border-radius: 50%;
@@ -125,7 +125,7 @@ section.user-forms #circle2 {
   animation: bounce 2s infinite ease-in-out;
 }
 
-section.user-forms #circle2 {
+main #loader-circle2 {
   -webkit-animation-delay: -1s;
   animation-delay: -1s;
 }
@@ -154,4 +154,4 @@ section.user-forms #circle2 {
     transform: scale(1);
     -webkit-transform: scale(1);
   }
-} */
+}

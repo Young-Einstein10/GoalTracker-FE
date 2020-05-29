@@ -30,6 +30,14 @@ console.log(AuthState);
 // const base_url = "http://localhost:5000";
 const base_url = "https://einstein-goal-tracker.herokuapp.com";
 
+// Access Forms
+const signInForm = $$(".sign-in form");
+const signUpForm = $$(".sign-up form");
+
+// Error Placeholders
+const signInAuthDialog = $$("div.signin-auth-error");
+const signupAuthDialog = $$("div.signup-auth-error");
+
 // Access auth elements to listen for auth actions
 const authAction = document.querySelectorAll(".auth");
 
@@ -44,6 +52,7 @@ authAction.forEach((eachItem) => {
     } else if (chosen === "forgot-password") {
       showForgotPasswordForm();
     } else if (chosen === `sign-out`) {
+      console.log("Sign Out Active");
       signOut();
     }
   });
@@ -92,9 +101,15 @@ const loading = (action) => {
   }
 };
 
-// Access Forms
-const signInForm = $$(".sign-in form");
-const signUpForm = $$(".sign-up form");
+const showAuthDialog = (element, message) => {
+  element.style.display = "block";
+  element.innerHTML = message;
+};
+
+const hideAuthDialog = (element) => {
+  element.style.display = "none";
+  element.innerHTML = "";
+};
 
 signInForm.addEventListener("submit", (e) => handleSignIn(e));
 signUpForm.addEventListener("submit", (e) => handleSignUp(e));
@@ -125,11 +140,18 @@ const handleSignIn = async (event) => {
     if (data.status == "success") {
       setAuthState(data);
       loading("hide");
+      signInForm.reset();
     } else if (data.status == "error") {
-      displayMsg(data.error, "Error");
+      loading("hide");
+      showAuthDialog(signInAuthDialog, data.error);
+      setTimeout(() => {
+        hideAuthDialog(signInAuthDialog);
+      }, 3000);
+      // displayMsg(data.error, "Error");
     }
   } catch (error) {
     console.log(error);
+    loading("hide");
     displayMsg(error.message, "Error");
   }
 };
@@ -174,6 +196,49 @@ const setAuthState = (userDetails) => {
   // routeToDashboard();
 };
 
-const handleSignUp = async () => {};
+const handleSignUp = async (event) => {
+  event.preventDefault();
+
+  // SHOW LOADING SPINNER
+  loading("show");
+
+  const firstname = $$("#signup-firstname").value,
+    lastname = $$("#signup-lastname").value,
+    username = $$("#signup-username").value,
+    email = $$("#signup-email").value,
+    password = $$("#signup-password").value;
+
+  const url = `${base_url}/api/v1/users/create`;
+
+  const headers = new Headers({
+    "Content-Type": "application/json",
+  });
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify({ firstname, lastname, username, email, password }),
+    });
+    const data = await response.json();
+
+    if (data.status === "success") {
+      console.log(data);
+      setAuthState(data);
+      loading("hide");
+      signUpForm.reset();
+    } else if (data.status === "error") {
+      loading("hide");
+      showAuthDialog(signupAuthDialog, data.error);
+      setTimeout(() => {
+        hideAuthDialog(signupAuthDialog);
+      }, 3000); // displayMsg(data.error, "Error");
+    }
+  } catch (error) {
+    console.log(error);
+    loading("hide");
+    displayMsg(error.message, "Error");
+  }
+};
 
 // export const auth = new Auth();

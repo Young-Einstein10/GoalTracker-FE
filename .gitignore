@@ -1,2 +1,8 @@
 node_modules
 yarn.lock
+.firebase
+.vscode
+.firebaserc
+firebase-debug.log
+firebase.json
+event.html

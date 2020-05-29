@@ -27,8 +27,16 @@ checkAuthState();
 
 console.log(AuthState);
 
-// const base_url = "http://localhost:5000";
-const base_url = "https://einstein-goal-tracker.herokuapp.com";
+const base_url = "http://localhost:5000";
+// const base_url = "https://einstein-goal-tracker.herokuapp.com";
+
+// Access Forms
+const signInForm = $$(".sign-in form");
+const signUpForm = $$(".sign-up form");
+
+// Error Placeholders
+const signInAuthDialog = $$("div.signin-auth-error");
+const signupAuthDialog = $$("div.signup-auth-error");
 
 // Access auth elements to listen for auth actions
 const authAction = document.querySelectorAll(".auth");
@@ -93,9 +101,15 @@ const loading = (action) => {
   }
 };
 
-// Access Forms
-const signInForm = $$(".sign-in form");
-const signUpForm = $$(".sign-up form");
+const showAuthDialog = (element, message) => {
+  element.style.display = "block";
+  element.innerHTML = message;
+};
+
+const hideAuthDialog = (element) => {
+  element.style.display = "none";
+  element.innerHTML = "";
+};
 
 signInForm.addEventListener("submit", (e) => handleSignIn(e));
 signUpForm.addEventListener("submit", (e) => handleSignUp(e));
@@ -129,7 +143,11 @@ const handleSignIn = async (event) => {
       signInForm.reset();
     } else if (data.status == "error") {
       loading("hide");
-      displayMsg(data.error, "Error");
+      showAuthDialog(signInAuthDialog, data.error);
+      setTimeout(() => {
+        hideAuthDialog(signInAuthDialog);
+      }, 3000);
+      // displayMsg(data.error, "Error");
     }
   } catch (error) {
     console.log(error);
@@ -211,7 +229,10 @@ const handleSignUp = async (event) => {
       signUpForm.reset();
     } else if (data.status === "error") {
       loading("hide");
-      displayMsg(data.error, "Error");
+      showAuthDialog(signupAuthDialog, data.error);
+      setTimeout(() => {
+        hideAuthDialog(signupAuthDialog);
+      }, 3000); // displayMsg(data.error, "Error");
     }
   } catch (error) {
     console.log(error);

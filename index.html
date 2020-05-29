@@ -7,10 +7,11 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="./loader.css" />
   </head>
+
   <body>
     <header>
       <div class="menu-nav">
-        <button class="close-icon" aria-checked="false">
+        <button class="close-icon hide-when-signed-out" aria-checked="false">
           <svg viewBox="0 0 24 24" class="close_icon" width="24" height="24">
             <path
               fill="currentColor"
@@ -20,7 +21,7 @@
           </svg>
         </button>
 
-        <button class="menu-icon" aria-checked="false">
+        <button class="menu-icon hide-when-signed-out" aria-checked="false">
           <svg width="24" height="24" viewBox="0 0 24 24">
             <path
               fill="currentColor"
@@ -70,12 +71,12 @@
             Email:
             <input
               type="email"
-              className=""
+              class=""
               id="signin-email"
               name="email"
               required
             />
-            <div className="input-feedback-i1"></div>
+            <div class="input-feedback-i1"></div>
           </label>
 
           <label>
@@ -83,15 +84,15 @@
             <input
               type="password"
               id="signin-password"
-              className=""
+              class=""
               name="password"
               required
             />
-            <div className="input-feedback-i2"></div>
+            <div class="input-feedback-i2"></div>
           </label>
 
           <button type="submit">Submit</button>
-          <div className="input-feedback-i3"></div>
+          <div class="signin-auth-error"></div>
         </form>
       </div>
 
@@ -100,69 +101,69 @@
         <h3>Sign Up</h3>
         <form>
           <div class="inline">
-            <label>
+            <label for="signup-firstname" class="fname">
               Firstname:
               <input
                 type="text"
-                className=""
+                class="fname"
                 id="signup-firstname"
                 name="firstname"
                 required
               />
-              <div className="input-feedback"></div>
+              <div class="input-feedback"></div>
             </label>
 
-            <label>
+            <label for="signup-lastname" class="lname">
               Lastname:
               <input
                 type="text"
-                className=""
+                class="lname"
                 id="signup-lastname"
                 name="lastname"
                 required
               />
-              <div className="input-feedback"></div>
+              <div class="input-feedback"></div>
             </label>
           </div>
 
-          <label>
+          <label for="signup-username">
             Username:
             <input
               type="text"
-              className=""
+              class=""
               id="signup-username"
               name="username"
               required
             />
-            <div className="input-feedback"></div>
+            <div class="input-feedback"></div>
           </label>
 
-          <label>
+          <label for="signup-email">
             Email:
             <input
               type="email"
-              className=""
+              class=""
               id="signup-email"
               name="email"
               required
             />
-            <div className="input-feedback"></div>
+            <div class="input-feedback"></div>
           </label>
 
-          <label>
+          <label for="signup-password">
             Password:
             <input
               type="password"
               id="signup-password"
-              className=""
+              class=""
               name="password"
               required
             />
-            <div className="input-feedback"></div>
+            <div class="input-feedback"></div>
           </label>
 
           <button type="submit">Submit</button>
-          <div className="input-feedback"></div>
+          <div class="signup-auth-error"></div>
         </form>
       </div>
 
@@ -343,6 +344,16 @@
           </p>
           <button class="add-goal-btn">Add a Goal Today</button>
         </div>
+
+        <!-- Loading visual cue -->
+        <div id="loader-outer-container" class="spinner">
+          <div id="loader-inner-container">
+            <div id="loaderspin">
+              <div id="loader-circle1"></div>
+              <div id="loader-circle2"></div>
+            </div>
+          </div>
+        </div>
       </main>
     </section>
 
@@ -404,16 +415,6 @@
         </form>
       </div>
     </div>
-
-    <!-- Loading visual cue -->
-    <!-- <div id="loading-outer-container" class="spinner">
-      <div id="loading-inner-container">
-        <div id="loadspin">
-          <div id="circle1"></div>
-          <div id="circle2"></div>
-        </div>
-      </div>
-    </div> -->
 
     <script>
       // function to set a given theme/color-scheme

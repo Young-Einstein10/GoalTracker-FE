@@ -433,7 +433,7 @@ const editTodo = async (event, todoId, goalId) => {
   // Convert is_done attribute to Boolean
   is_done = JSON.parse(is_done);
 
-  const url = `http://localhost:5000/api/v1/goals/${goalId}/todos/${todoId}`;
+  const url = `${script_base_url}/api/v1/goals/${goalId}/todos/${todoId}`;
 
   const headers = new Headers({
     "Content-Type": "application/json",
@@ -730,8 +730,10 @@ const displayMsg = (msg, type) => {
   }
 };
 
-const getProjectGoal = (goalId) => {
+const getProjectGoal = async (goalId) => {
   console.log("Getting Project Goal...", goalId);
+
+  showloader("show");
 
   const url = `${script_base_url}/api/v1/goals/${goalId}`;
 
@@ -740,23 +742,24 @@ const getProjectGoal = (goalId) => {
     Authorization: `Bearer ${AuthState.credentials.token}`,
   });
 
-  fetch(url, {
-    headers: headers,
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.status === "success") {
-        // console.log(data.data[0].todos);
-        showProjectTodos(data.data[0]);
-      } else if (data.status === "error") {
-        console.log(data);
-        displayMsg(data.message, "Error");
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-      displayMsg(err.message, "Error");
-    });
+  try {
+    const response = await fetch(url, { headers });
+    const data = await response.json();
+
+    if (data.status === "success") {
+      // console.log(data.data[0].todos);
+      showloader("hide");
+      showProjectTodos(data.data[0]);
+    } else if (data.status === "error") {
+      console.log(data);
+      showloader("hide");
+      displayMsg(data.message, "Error");
+    }
+  } catch (error) {
+    console.log(error);
+    showloader("hide");
+    displayMsg(err.message, "Error");
+  }
 };
 
 // window.addEventListener("DOMContentLoaded", getAllGoals);
@@ -1073,7 +1076,7 @@ const handleCheckBox = (e) => {
     .previousElementSibling.id;
 
   const updateTodoWhenChecked = async (is_done_State) => {
-    const url = `http://localhost:5000/api/v1/goals/${goalId}/todos/${todoId}`;
+    const url = `${script_base_url}/api/v1/goals/${goalId}/todos/${todoId}`;
 
     const headers = new Headers({
       "Content-Type": "application/json",
@@ -1114,5 +1117,16 @@ const handleCheckBox = (e) => {
     todo.style.textDecoration = "";
     // Make Request to Update ToDo State in database
     updateTodoWhenChecked(false);
+  }
+};
+
+// Function to hide and show the loading visual cue
+const showloader = (action) => {
+  if (action === "show") {
+    document.getElementById("loader-outer-container").style.display = "block";
+  } else if (action === "hide") {
+    document.getElementById("loader-outer-container").style.display = "none";
+  } else {
+    console.log("loading error");
   }
 };
