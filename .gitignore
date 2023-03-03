@@ -4,5 +4,4 @@ yarn.lock
 .vscode
 .firebaserc
 firebase-debug.log
-firebase.json
 event.html
