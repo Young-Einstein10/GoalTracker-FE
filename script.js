@@ -1,6 +1,6 @@
 const $ = (element) => document.querySelector(element);
 const script_base_url = "http://localhost:5000";
-// const script_base_url = "https://einstein-goal-tracker.herokuapp.com";
+// const script_base_url = "https://goaltracker.herokuapp.com";
 
 // ADD PROJECT/GOAL BUTTON
 const projects = $("li.project-list");
@@ -1072,8 +1072,9 @@ const handleCheckBox = (e) => {
   const todo = document
     .getElementById(todoId)
     .querySelector("span.todos-list__item__text");
-  const goalId = document.getElementById(todoId).parentElement.parentElement
-    .previousElementSibling.id;
+  const goalId =
+    document.getElementById(todoId).parentElement.parentElement
+      .previousElementSibling.id;
 
   const updateTodoWhenChecked = async (is_done_State) => {
     const url = `${script_base_url}/api/v1/goals/${goalId}/todos/${todoId}`;

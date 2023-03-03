@@ -28,7 +28,7 @@ checkAuthState();
 console.log(AuthState);
 
 // const base_url = "http://localhost:5000";
-const base_url = "https://einstein-goal-tracker.herokuapp.com";
+const base_url = "https://goaltracker.herokuapp.com";
 
 // Access Forms
 const signInForm = $$(".sign-in form");
